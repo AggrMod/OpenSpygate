@@ -14,7 +14,7 @@ OpenSpygate (Open Spygate International) is an open-source, open-world, multipla
 |---|---|
 | Stage | 0, pre-production |
 | Open for work | Stage 0 tasks and "open at any time" tasks in `docs/TASKS.md` |
-| Playable build | `game/` is a Godot 4.7 project that starts in the void and lets you walk (self-playing test `void_walk` passes). The door is not in it yet |
+| Playable build | `game/` is a Godot 4.7 project that starts in the void and lets you walk (self-playing test `void_walk` passes). The door is in it: baked from its procedural materials at 2048 px and exported by `source/bake_door.py`. It cannot be opened yet and there is no voice |
 | Written so far | Design document, production plan, art bible v0.1 (#1) and technical design v0.1 (#2), both open for comment |
 | Drafts awaiting review | Audio guide (#3), recruitment design (#4), Berlin reference pack (#7). Licence notes (#6) reviewed and accepted as a first pass |
 | Being built now | The Door, brought forward ahead of stage 1 so there is something to see. Geometry pass done (`assets/shared/hero/door_tenement_a`, clay pictures in `review/`); materials, textures, the void scene and the voice are not done |

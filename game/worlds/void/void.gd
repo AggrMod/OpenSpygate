@@ -68,6 +68,7 @@ func _build_door() -> void:
 	door = (load(DOOR_SCENE) as PackedScene).instantiate() as Node3D
 	door.name = "Door"
 	add_child(door)
+	_dress_door()
 	# The room beyond: warm light that only gets out under the door and through the glass.
 	var spill := SpotLight3D.new()
 	spill.name = "LightBeyond"
@@ -99,3 +100,51 @@ func _build_door() -> void:
 	key.spot_angle = 28.0
 	key.shadow_enabled = true
 	add_child(key)
+
+
+## Things the exported model cannot carry: the glass, what you bump into, and the unseen room behind.
+func _dress_door() -> void:
+	var glass := door.find_child("leaf_glass", true, false) as MeshInstance3D
+	if glass != null:
+		var gm := StandardMaterial3D.new()
+		gm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		gm.albedo_color = Color(0.93, 0.88, 0.74, 0.82)
+		gm.roughness = 0.45
+		gm.backlight_enabled = true
+		gm.backlight = Color(1.0, 0.86, 0.62)
+		gm.cull_mode = BaseMaterial3D.CULL_DISABLED
+		glass.material_override = gm
+		glass.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	# Collision: the two jambs, the head, and the closed leaf.
+	var body := StaticBody3D.new()
+	body.name = "DoorBody"
+	for box: Array in [
+		[Vector3(-0.515, 1.2, 0.0), Vector3(0.11, 2.4, 0.2)],
+		[Vector3(0.515, 1.2, 0.0), Vector3(0.11, 2.4, 0.2)],
+		[Vector3(0.0, 2.27, 0.0), Vector3(1.14, 0.27, 0.2)],
+		[Vector3(0.0, 1.08, 0.0), Vector3(0.92, 2.12, 0.05)],
+	]:
+		var cs := CollisionShape3D.new()
+		var bs := BoxShape3D.new()
+		bs.size = box[1]
+		cs.shape = bs
+		cs.position = box[0]
+		body.add_child(cs)
+	add_child(body)
+	# The room beyond is never seen. These black walls only keep its light from leaking round the frame.
+	var black := StandardMaterial3D.new()
+	black.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	black.albedo_color = Color.BLACK
+	for wall: Array in [
+		[Vector3(0.0, 1.15, -1.32), Vector3(1.10, 2.34, 0.03)],
+		[Vector3(-0.54, 1.15, -0.70), Vector3(0.03, 2.34, 1.24)],
+		[Vector3(0.54, 1.15, -0.70), Vector3(0.03, 2.34, 1.24)],
+		[Vector3(0.0, 2.32, -0.70), Vector3(1.10, 0.03, 1.24)],
+	]:
+		var mi := MeshInstance3D.new()
+		var bm := BoxMesh.new()
+		bm.size = wall[1]
+		mi.mesh = bm
+		mi.position = wall[0]
+		mi.material_override = black
+		add_child(mi)

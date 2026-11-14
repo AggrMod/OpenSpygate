@@ -2,3 +2,6 @@
 export/
 *.blend1
 *.tmp
+
+# baked textures are rebuilt by each asset's bake script and are embedded in its export
+assets/**/textures/*.png

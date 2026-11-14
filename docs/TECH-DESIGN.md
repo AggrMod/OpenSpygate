@@ -15,6 +15,8 @@ Numbers marked *(start)* are starting values, to be measured and corrected in st
 
 ## 2. Project layout
 
+The Godot project lives in `game/`. Asset sources (Blender files, scripts, review pictures) live in `assets/` at the repository root; only exported files are copied into `game/assets/`.
+
 ```
 project.godot
 autoload/

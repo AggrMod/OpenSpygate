@@ -14,7 +14,7 @@ OpenSpygate (Open Spygate International) is an open-source, open-world, multipla
 |---|---|
 | Stage | 0, pre-production |
 | Open for work | Stage 0 tasks and "open at any time" tasks in `docs/TASKS.md` |
-| Playable build | None yet |
+| Playable build | `game/` is a Godot 4.7 project that starts in the void and lets you walk (self-playing test `void_walk` passes). The door is not in it yet |
 | Written so far | Design document, production plan, art bible v0.1 (#1) and technical design v0.1 (#2), both open for comment |
 | Drafts awaiting review | Audio guide (#3), recruitment design (#4), Berlin reference pack (#7). Licence notes (#6) reviewed and accepted as a first pass |
 | Being built now | The Door, brought forward ahead of stage 1 so there is something to see. Geometry pass done (`assets/shared/hero/door_tenement_a`, clay pictures in `review/`); materials, textures, the void scene and the voice are not done |
@@ -52,7 +52,7 @@ That is also the build order. We start with nothing but the door and make it as 
 
 1. **We make our own assets, always.** Every model, texture, sound and line is made by a contributor for this project. No downloaded asset packs or libraries, nothing from any commercial game, no real brands or logos, no real living people. Fonts under the Open Font License are the one exception.
 2. **No placeholders on screen.** Unbuilt space is void. A contribution is a finished thing, however small.
-3. **Realistic, not uncanny.** True-to-life dimensions, materials and light. People are believable without chasing photographic faces.
+3. **Realistic and true to history.** True-to-life dimensions, materials and light, and true to the real place and year: a Berlin door is built the way Berlin doors were built. Check a real reference before designing; say what you could and could not confirm. People are believable without chasing photographic faces.
 4. **One stage at a time.** Work on the open stage or on "open at any time" tasks. A stage opens only when the previous gate has passed.
 5. **The host decides.** Game rules run on the host. A client never decides what happened.
 6. **Everything is checkable.** Code comes with a test that runs without graphics. Assets come with their source, measurements and pictures. If it cannot be checked, it cannot be merged.

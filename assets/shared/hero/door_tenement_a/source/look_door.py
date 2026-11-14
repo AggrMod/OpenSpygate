@@ -19,7 +19,7 @@ HX, HT = LEAF_W / 2, LEAF_T / 2
 HANDLE_X, HANDLE_Z = -HX + 0.058, Z0 + 1.05
 JAMB_D = 0.16
 
-PAINT_TOP = (0.030, 0.072, 0.052, 1)     # dark bottle-green oil paint, the last coat
+PAINT_TOP = (0.105, 0.046, 0.026, 1)     # dark red-brown oil paint, the last coat (period colour not yet confirmed from a source)
 PAINT_UNDER = (0.56, 0.47, 0.30, 1)      # the older ochre-cream coat under it
 WOOD_DARK = (0.165, 0.095, 0.048, 1)
 WOOD_LIGHT = (0.37, 0.245, 0.135, 1)
@@ -165,9 +165,10 @@ def painted_wood(mat, seed):
     crack = g.ramp(g.cracks(p, 260.0), 0.0, 0.05, 1.0, 0.0)      # hairline, a few millimetres across
     crack = g.mul(g.mul(crack, g.ramp(big, 0.48, 0.66)), 0.45)
 
-    top = g.mixc(g.ramp(big, 0.25, 0.8), (0.022, 0.058, 0.041, 1), PAINT_TOP)
-    top = g.mixc(g.mul(crack, 0.55), top, (0.012, 0.022, 0.016, 1))
-    top = g.mixc(g.mul(hand, 0.45), top, (0.020, 0.040, 0.028, 1))                 # greasy and darkened by hands
+    shade = lambda k: (PAINT_TOP[0] * k, PAINT_TOP[1] * k, PAINT_TOP[2] * k, 1)
+    top = g.mixc(g.ramp(big, 0.25, 0.8), shade(0.74), PAINT_TOP)
+    top = g.mixc(crack, top, shade(0.38))
+    top = g.mixc(g.mul(hand, 0.45), top, shade(0.60))                              # greasy and darkened by hands
     col = g.mixc(chip_top, top, PAINT_UNDER)
     col = g.mixc(chip_all, col, grey)
     col = g.mixc(g.mul(cavity, 0.75), col, (0.030, 0.026, 0.020, 1))               # grime settles in the mouldings
@@ -223,6 +224,15 @@ def simple(mat, color, rough, grime=0.0):
     g.finish(col, rough)
 
 
+def glass(mat):
+    """Hammered ornamental glass: lets the light through and hides what is behind it."""
+    g = G(mat)
+    n1, n2 = g.noise(g.pos, 95.0, 2.0, 0.5), g.noise(g.pos, 300.0, 2.0, 0.5)
+    g.put(g.bsdf, "Transmission Weight", 1.0)
+    g.put(g.bsdf, "IOR", 1.5)
+    g.finish((0.93, 0.90, 0.80, 1), 0.34, g.add(g.mul(n1, 0.8), g.mul(n2, 0.2)), bump_dist=0.0012, bump_strength=1.0)
+
+
 def floor(mat):
     g = G(mat)
     p = g.pos
@@ -239,6 +249,7 @@ painted_wood(M("wood_leaf"), 1.0)
 painted_wood(M("wood_frame"), 2.0)
 brass(M("brass"))
 iron(M("iron"))
+glass(M("glass"))
 simple(M("dark"), (0.004, 0.004, 0.004, 1), 0.9)
 simple(M("paper"), (0.62, 0.56, 0.42, 1), 0.92, grime=0.55)
 simple(M("porcelain"), (0.80, 0.78, 0.72, 1), 0.16, grime=0.25)
@@ -259,7 +270,7 @@ fm = M("void_floor"); floor(fm)
 plane("void_floor", [(-9, -9, 0), (9, -9, 0), (9, 9, 0), (-9, 9, 0)], fm)
 black = M("void_black"); simple(black, (0, 0, 0, 1), 1.0)
 # the place behind the door: light gets out only through the gaps
-bx, by0, by1, bz = 0.53, JAMB_D / 2 + 0.001, 1.3, 2.21
+bx, by0, by1, bz = 0.53, JAMB_D / 2 + 0.001, 1.3, 2.30
 for nm, v in (("back", [(-bx, by1, 0), (bx, by1, 0), (bx, by1, bz), (-bx, by1, bz)]),
               ("l", [(-bx, by0, 0), (-bx, by1, 0), (-bx, by1, bz), (-bx, by0, bz)]),
               ("r", [(bx, by0, 0), (bx, by1, 0), (bx, by1, bz), (bx, by0, bz)]),
@@ -277,6 +288,7 @@ def light(name, loc, target, power, size, color, size_y=None):
 
 
 light("behind", (0.0, 0.75, 0.16), (0.0, -0.3, 0.02), 900, 0.85, (1.0, 0.70, 0.38), 0.22)   # the room beyond
+light("lamp", (0.15, 1.05, 1.95), (0.0, 0.0, 1.75), 26, 0.5, (1.0, 0.72, 0.42))                    # a lamp in the room, seen through the glass
 light("key", (-2.3, -3.0, 3.1), (0.0, 0.0, 1.15), 150, 2.6, (0.80, 0.88, 1.0))
 light("rim", (2.6, -1.2, 2.2), (0.0, 0.0, 1.2), 34, 1.2, (0.70, 0.80, 1.0))
 
@@ -305,7 +317,8 @@ def shot(name, loc, target, lens, res, fstop=None):
     print("SHOT", name)
 
 
-shot("void", (-0.75, -4.3, 1.45), (0.0, 0.0, 1.02), 42, (1100, 1400))
+shot("void", (-0.75, -4.5, 1.45), (0.0, 0.0, 1.12), 42, (1100, 1400))
 shot("handle", (HANDLE_X + 0.22, -0.42, HANDLE_Z + 0.07), (HANDLE_X + 0.05, 0.0, HANDLE_Z - 0.035), 50, (1200, 1000), 5.6)
 shot("bottom", (-0.05, -0.62, 0.30), (-0.22, 0.0, 0.11), 35, (1200, 900), 8.0)
-shot("midrail", (0.42, -0.70, 1.22), (0.05, 0.0, 1.05), 45, (1200, 900), 8.0)
+shot("midrail", (0.40, -0.72, 1.36), (0.0, 0.0, 1.24), 45, (1200, 900), 8.0)
+shot("glass", (0.30, -0.80, 1.86), (0.0, 0.0, 1.78), 45, (1200, 900), 8.0)

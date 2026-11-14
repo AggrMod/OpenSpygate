@@ -1,4 +1,4 @@
-"""Builds the door (art bible, section 11): geometry pass.
+"""Builds the door (art bible, section 11): a Berlin flat door of about 1905 as it stood in 1961.
 
     blender -b -P build_door.py -- <asset_dir> [--clay]
 
@@ -23,7 +23,7 @@ HX = LEAF_W / 2
 HT = LEAF_T / 2
 STILE, MUNTIN = 0.11, 0.09
 RAIL_BOTTOM, RAIL_LOCK, RAIL_FRIEZE, RAIL_TOP = 0.22, 0.16, 0.10, 0.11
-LOCK_Z = Z0 + 1.02                  # centre of the lock rail
+LOCK_Z = Z0 + 1.12 + 0.063          # letter-slot line on the lock rail
 FRIEZE_Z = Z0 + 1.72
 JAMB_W, JAMB_D = 0.104, 0.16
 OPEN_X = HX + GAP_SIDE              # inner face of the jambs
@@ -206,26 +206,60 @@ bpy.ops.wm.read_factory_settings(use_empty=True)
 root = bpy.data.objects.new("door_tenement_a", None)
 bpy.context.scene.collection.objects.link(root)
 
-# ---- leaf: frame-and-panel joinery -------------------------------------------------------------
+# ---- leaf: Berlin flat door, about 1905 ----------------------------------------------------------
+# Two tall panels below, a lock rail with a reeded band, and glazed lights under a segmental arch above.
 leaf = Part("leaf_wood", "wood_leaf")
-rails = [  # (z_lo, z_hi)
-    (Z0, Z0 + RAIL_BOTTOM),
-    (LOCK_Z - RAIL_LOCK / 2, LOCK_Z + RAIL_LOCK / 2),
-    (FRIEZE_Z - RAIL_FRIEZE / 2, FRIEZE_Z + RAIL_FRIEZE / 2),
-    (Z1 - RAIL_TOP, Z1),
-]
-for sx in (-1, 1):  # stiles run the full height
-    leaf.add_bm(box((sx * HX, -HT, Z0), (sx * (HX - STILE), HT, Z1)))
-TAG["horiz"] = 1.0
-for zl, zh in rails:
-    leaf.add_bm(box((-(HX - STILE), -HT, zl), (HX - STILE, HT, zh)))
-TAG["horiz"] = 0.0
-openings = []
-for (_, zl), (zh, _) in zip(rails[:-1], rails[1:]):
-    leaf.add_bm(box((-MUNTIN / 2, -HT, zl), (MUNTIN / 2, HT, zh)))  # muntin between rails
-    openings.append((-(HX - STILE), -MUNTIN / 2, zl, zh))
-    openings.append((MUNTIN / 2, HX - STILE, zl, zh))
+INNER = HX - STILE                       # half-width between the stiles
+LOWER_TOP = Z0 + 1.12                    # top of the lower panels
+GLASS_Z0 = LOWER_TOP + 0.22              # top of the lock rail, bottom of the glazing
+ARCH_SPRING, ARCH_CROWN = Z1 - 0.20, Z1 - 0.115
+ARCH_R = (INNER ** 2 + (ARCH_CROWN - ARCH_SPRING) ** 2) / (2 * (ARCH_CROWN - ARCH_SPRING))
 
+def arch_z(x):
+    return ARCH_CROWN - ARCH_R + math.sqrt(max(ARCH_R ** 2 - x * x, 0.0))
+
+for sx in (-1, 1):  # stiles run the full height
+    leaf.add_bm(box((sx * HX, -HT, Z0), (sx * INNER, HT, Z1)))
+TAG["horiz"] = 1.0
+leaf.add_bm(box((-INNER, -HT, Z0), (INNER, HT, Z0 + RAIL_BOTTOM)))          # bottom rail
+leaf.add_bm(box((-INNER, -HT, LOWER_TOP), (INNER, HT, GLASS_Z0)))            # lock rail
+# top rail with an arched underside
+n = 28
+xs = [-INNER + 2 * INNER * i / n for i in range(n + 1)]
+v, f = [], []
+for x in xs:
+    v += [Vector((x, -HT, arch_z(x))), Vector((x, -HT, Z1)), Vector((x, HT, Z1)), Vector((x, HT, arch_z(x)))]
+for i in range(n):
+    p, q = i * 4, (i + 1) * 4
+    f += [(p, q, q + 1, p + 1), (p + 1, q + 1, q + 2, p + 2), (p + 2, q + 2, q + 3, p + 3), (p + 3, q + 3, q, p)]
+leaf.add(v, f)
+# reeded band across the lock rail, staircase side only
+for i in range(6):
+    z = LOWER_TOP + 0.168 + i * 0.0082
+    leaf.add(*tube([(-INNER + 0.028, -HT + 0.0006, z), (INNER - 0.028, -HT + 0.0006, z)], [0.0042, 0.0042], segs=10))
+leaf.add_bm(box((-INNER + 0.022, -HT - 0.0015, LOWER_TOP + 0.158), (-INNER + 0.028, -HT, LOWER_TOP + 0.219), bevel=0.0006))
+leaf.add_bm(box((INNER - 0.028, -HT - 0.0015, LOWER_TOP + 0.158), (INNER - 0.022, -HT, LOWER_TOP + 0.219), bevel=0.0006))
+# horizontal glazing bar
+BAR_W, BAR_D = 0.022, 0.015
+GLASS_MID = GLASS_Z0 + 0.305
+leaf.add_bm(box((-INNER, -BAR_D, GLASS_MID - BAR_W / 2), (INNER, BAR_D, GLASS_MID + BAR_W / 2), bevel=0.004, segs=3))
+TAG["horiz"] = 0.0
+leaf.add_bm(box((-MUNTIN / 2, -HT, Z0 + RAIL_BOTTOM), (MUNTIN / 2, HT, LOWER_TOP)))   # muntin between the panels
+for k in range(1, 5):   # four upright glazing bars make five lights across
+    x = -INNER + 2 * INNER * k / 5
+    leaf.add_bm(box((x - BAR_W / 2, -BAR_D - 0.0015, GLASS_Z0), (x + BAR_W / 2, BAR_D + 0.0015, arch_z(x) + 0.006), bevel=0.004, segs=3))
+# glazing beads round the opening, both faces
+for out in (-1, 1):
+    y = out * (HT - 0.0045)
+    arc = [(x, y, arch_z(x) - 0.0005) for x in xs]
+    leaf.add(*tube(arc, [0.0062] * len(arc), segs=10))
+    leaf.add(*tube([(-INNER + 0.0005, y, GLASS_Z0), (-INNER + 0.0005, y, ARCH_SPRING)], [0.0062] * 2, segs=10))
+    leaf.add(*tube([(INNER - 0.0005, y, GLASS_Z0), (INNER - 0.0005, y, ARCH_SPRING)], [0.0062] * 2, segs=10))
+    TAG["horiz"] = 1.0
+    leaf.add(*tube([(-INNER, y, GLASS_Z0 + 0.0005), (INNER, y, GLASS_Z0 + 0.0005)], [0.0062] * 2, segs=10))
+    TAG["horiz"] = 0.0
+
+openings = [(-INNER, -MUNTIN / 2, Z0 + RAIL_BOTTOM, LOWER_TOP), (MUNTIN / 2, INNER, Z0 + RAIL_BOTTOM, LOWER_TOP)]
 # panel moulding + fielded panel, both faces. (distance in from the opening edge, height above the face)
 PANEL_PROFILE = [(-0.0006, 0.0), (0.0015, -0.0004), (0.004, -0.0022), (0.0075, -0.0060), (0.011, -0.0105),
                  (0.0135, -0.0140), (0.0150, -0.0160), (0.0165, -0.0166), (0.040, -0.0166), (0.0415, -0.0160),
@@ -240,6 +274,9 @@ for x0, x1, z0, z1 in openings:
         m = len(PANEL_PROFILE)
         f.append(tuple(i * m + m - 1 for i in range(4)))  # the raised field
         leaf.add(v, f)
+
+glass = Part("leaf_glass", "glass")
+glass.add_bm(box((-INNER - 0.004, -0.002, GLASS_Z0 - 0.004), (INNER + 0.004, 0.002, ARCH_CROWN + 0.004), bevel=0))
 
 leaf_ob = leaf.build(root, origin=(HX + 0.0015, HT + 0.008, 0.0))  # pivot on the hinge line
 
@@ -258,6 +295,13 @@ TAG["horiz"] = 1.0
 frame.add_bm(box((-OPEN_X, -JAMB_D / 2, HEAD_Z), (OPEN_X, JAMB_D / 2, top)))
 TAG["horiz"] = 0.0
 frame.add_bm(box((-OPEN_X, -HT - 0.0225, HEAD_Z - 0.012), (OPEN_X, -HT - 0.003, HEAD_Z)))
+WF = OPEN_X + JAMB_W
+TAG["horiz"] = 1.0
+frame.add_bm(box((-WF, -JAMB_D / 2, top), (WF, JAMB_D / 2, top + 0.150)))
+frame.add_bm(box((-WF, -JAMB_D / 2 - 0.022, top), (WF, -JAMB_D / 2, top + 0.096), bevel=0.002))
+frame.add_bm(box((-WF - 0.018, -JAMB_D / 2 - 0.046, top + 0.096), (WF + 0.018, JAMB_D / 2, top + 0.123), bevel=0.005, segs=3))
+frame.add_bm(box((-WF - 0.042, -JAMB_D / 2 - 0.074, top + 0.123), (WF + 0.042, JAMB_D / 2, top + 0.152), bevel=0.006, segs=3))
+TAG["horiz"] = 0.0
 # casing: (distance out from the opening edge, height off the frame face), a closed section
 CASING = [(0.0, 0.0), (0.0, 0.011), (0.003, 0.0135), (0.009, 0.0150), (0.012, 0.0185), (0.017, 0.0200),
           (0.022, 0.0185), (0.026, 0.0150), (0.050, 0.0150), (0.055, 0.0175), (0.062, 0.0215), (0.070, 0.0250),
@@ -300,7 +344,9 @@ def screw(part, x, z, yf, out, r=0.0034):
     return (x, z, yf, out, ang, r)
 
 brass = Part("hardware_brass", "brass")
-iron = Part("hardware_iron", "iron")
+iron = Part("frame_iron", "iron")
+leaf_iron = Part("leaf_iron", "iron")
+frame_brass = Part("frame_brass", "brass")
 dark = Part("hardware_dark", "dark")
 slots = []
 plates = []
@@ -325,18 +371,19 @@ def lever(out):
     cx, cy, rad = HANDLE_X + 0.020, yf + out * 0.030, 0.020
     for k in range(1, 9):
         a = math.pi / 2 * k / 8
-        p.append((cx - rad * math.cos(a), cy + out * rad * math.sin(a), HANDLE_Z)); r.append(0.0096 - 0.0006 * k / 8)
-    n = 14
+        p.append((cx - rad * math.cos(a), cy + out * rad * math.sin(a), HANDLE_Z)); r.append(0.0096 - 0.0016 * k / 8)
+    n = 16
     for k in range(1, n + 1):
         t = k / n
-        x = cx + 0.112 * t
-        droop = -0.006 * t * t
-        y = yf + out * (0.050 - 0.004 * math.sin(t * math.pi))
-        rr = 0.0090 + 0.0006 * math.sin(t * math.pi) + 0.0022 * max(0.0, t - 0.72) / 0.28
-        p.append((x, y, HANDLE_Z + droop)); r.append(rr)
-    for k in range(1, 6):  # rounded end
-        a = math.pi / 2 * k / 5
-        p.append((cx + 0.112 + 0.011 * math.sin(a), yf + out * 0.050, HANDLE_Z - 0.006)); r.append(max(0.0112 * math.cos(a), 0.0004))
+        x = cx + 0.104 * t
+        z = HANDLE_Z + 0.0035 * math.sin(t * math.pi * 2) - 0.004 * t      # a slight S, falling toward the end
+        y = yf + out * (0.050 - 0.003 * math.sin(t * math.pi))
+        rr = 0.0080 - 0.0014 * t if t < 0.86 else 0.0066 - 0.0012 * (t - 0.86) / 0.14
+        p.append((x, y, z)); r.append(rr)
+    ex, ez, br = cx + 0.104, HANDLE_Z - 0.004, 0.0108
+    for k in range(1, 10):  # ball end
+        a = math.pi * k / 9
+        p.append((ex + br * (1 - math.cos(a)), yf + out * 0.050, ez)); r.append(max(br * math.sin(a), 0.0004))
     return tube(p, r, segs=20)
 
 handles = []
@@ -357,8 +404,8 @@ flap.add(v, f)
 plates.append((LS_X, LS_Z, 0.236, 0.060, HT, 0.0022, 1))
 dark.add_bm(box((LS_X - 0.100, -HT - 0.0005, LS_Z - 0.019), (LS_X + 0.100, HT + 0.0005, LS_Z + 0.019), bevel=0))
 
-# name-plate holder on the frieze rail (side A): a brass frame round a blank card
-NP_X, NP_Z = 0.0, FRIEZE_Z
+# name-plate holder on the lock rail beside the letter slot (side A): a brass frame round a blank card
+NP_X, NP_Z = -0.205, LOCK_Z + 0.012
 corners = [(NP_X - 0.048, NP_Z - 0.019), (NP_X + 0.048, NP_Z - 0.019), (NP_X + 0.048, NP_Z + 0.019), (NP_X - 0.048, NP_Z + 0.019)]
 place = lambda c, d, dd, h: Vector((c[0] + d[0] * dd, -HT - h, c[1] + d[1] * dd))
 v, f = sweep_closed(corners, [(1, 1), (-1, 1), (-1, -1), (1, -1)],
@@ -376,18 +423,18 @@ for hz in (Z0 + 0.20, Z0 + 1.06, Z0 + 1.90):
         v, f = lathe((ax[0], ax[1], hz), (0, 0, sgn),
                      [(0.0, 0.094), (0.0030, 0.093), (0.0052, 0.089), (0.0056, 0.085), (0.0040, 0.081), (0.0046, 0.078),
                       (0.0082, 0.076), (0.0082, 0.0006), (0.0078, 0.0)][::-1], segs=20)
-        iron.add(v, f)
-    iron.add_bm(box((HX - 0.030, HT, hz + 0.002), (HX + 0.0015, HT + 0.0022, hz + 0.074), bevel=0.0005))
+        (leaf_iron if sgn > 0 else iron).add(v, f)
+    leaf_iron.add_bm(box((HX - 0.030, HT, hz + 0.002), (HX + 0.0015, HT + 0.0022, hz + 0.074), bevel=0.0005))
     iron.add_bm(box((HX + 0.0015, HT, hz - 0.074), (OPEN_X + 0.030, HT + 0.0022, hz - 0.002), bevel=0.0005))
 
 # lock: faceplate on the leaf edge, with latch
-iron.add_bm(box((-HX - 0.0006, -0.011, HANDLE_Z - 0.115), (-HX + 0.002, 0.011, HANDLE_Z + 0.045), bevel=0.0004))
-iron.add_bm(box((-HX - 0.009, -0.007, HANDLE_Z - 0.012), (-HX, 0.007, HANDLE_Z + 0.012), bevel=0.002, segs=3))
+leaf_iron.add_bm(box((-HX - 0.0006, -0.011, HANDLE_Z - 0.115), (-HX + 0.002, 0.011, HANDLE_Z + 0.045), bevel=0.0004))
+leaf_iron.add_bm(box((-HX - 0.009, -0.007, HANDLE_Z - 0.012), (-HX, 0.007, HANDLE_Z + 0.012), bevel=0.002, segs=3))
 
 # bell push on the casing, handle side, side A
 BX, BZ, BY = -(OPEN_X + 0.038), Z0 + 1.22, -JAMB_D / 2 - 0.015
 v, f = lathe((BX, BY, BZ), (0, -1, 0), [(0.0290, 0.0), (0.0290, 0.0020), (0.0265, 0.0050), (0.0200, 0.0085), (0.0135, 0.0105), (0.0118, 0.0112), (0.0112, 0.0090)], segs=32)
-brass.add(v, f)
+frame_brass.add(v, f)
 button = Part("bell_button", "porcelain")
 v, f = lathe((BX, BY, BZ), (0, -1, 0), [(0.0100, 0.0085), (0.0100, 0.0128), (0.0085, 0.0146), (0.0050, 0.0156), (0.0, 0.0160)], segs=24)
 button.add(v, f)
@@ -424,6 +471,9 @@ for (x, z, yf, out, ang, r) in slots:
     boolean_cut(brass_ob, c)
 
 iron_ob = iron.build(root)
+leaf_iron_ob = leaf_iron.build(root)
+frame_brass_ob = frame_brass.build(root)
+glass_ob = glass.build(root)
 dark_ob = dark.build(root)
 card_ob = card.build(root)
 button_ob = button.build(root)
@@ -431,7 +481,7 @@ flap_ob = flap.build(root, origin=(LS_X, -HT - 0.0062, LS_Z + 0.0225))
 handle_obs = [h.build(root, origin=o) for h, o in handles]
 
 # everything that moves with the leaf hangs from it
-for ob in plate_obs + [brass_ob, dark_ob, card_ob, flap_ob] + handle_obs:
+for ob in plate_obs + [brass_ob, dark_ob, card_ob, flap_ob, glass_ob, leaf_iron_ob] + handle_obs:
     w = ob.matrix_world.copy(); ob.parent = leaf_ob; ob.matrix_parent_inverse = leaf_ob.matrix_world.inverted()
 # the bell rose and the frame halves of the hinges stay with the frame (kept in their meshes for now)
 

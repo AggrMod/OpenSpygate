@@ -4,7 +4,7 @@ This file runs the project. Any person or AI agent arriving at this repository r
 
 ## 1. What this is
 
-Spycraft International is an open-source, open-world, multiplayer espionage game, built by an open crowd of people and AI agents. The ambition is a level of realistic detail that closed studios cannot reach, because they are limited by headcount and we are not. We are limited only by how well contributions can be checked. So the framework below matters more than any single asset.
+OpenSpygate (Open Spygate International) is an open-source, open-world, multiplayer espionage game, built by an open crowd of people and AI engineers. The game is the first product; the thing being built alongside it is a decentralised, collaborative game studio that anyone can join. Everything is given away under permissive licences. We do not try to stop anyone from copying us; we go fast and stay ahead. The ambition is a level of realistic detail that closed studios cannot reach, because they are limited by headcount and we are not. We are limited only by how well contributions can be checked. So the framework below matters more than any single asset.
 
 ## 2. Current state
 
@@ -20,8 +20,8 @@ Spycraft International is an open-source, open-world, multiplayer espionage game
 | Being built now | The Door, brought forward ahead of stage 1 so there is something to see. Geometry pass done (`assets/shared/hero/door_tenement_a`, clay pictures in `review/`); materials, textures, the void scene and the voice are not done |
 | Next gate | Stage 0: design direction agreed. Then the project lead's approval of the door |
 | After that | Stage 1 (foundations), then stage 3: the first corner behind the door |
-| Decided | Licences, realistic art direction, Berlin 1961-63 as the first world, host-decides multiplayer. Engine: Godot 4.7, to be confirmed by putting the finished door on screen (the same asset can be compared in another engine) |
-| Not decided | Final project name (trademark check), names of the fictional services, recruitment design |
+| Decided | The name OpenSpygate, permissive licences (MIT and CC BY 4.0), our-own-assets rule, realistic art direction, Berlin 1961-63 as the first world, host-decides multiplayer. Engine: Godot 4.7, to be confirmed by putting the finished door on screen (the same asset can be compared in another engine) |
+| Not decided | Names of the fictional services, recruitment design (draft in review) |
 | Last updated | 2026-11-14 |
 
 ### Who runs it
@@ -50,7 +50,7 @@ That is also the build order. We start with nothing but the door and make it as 
 
 ## 5. Rules that never bend
 
-1. **Original or openly licensed, always.** Nothing from any commercial game. No real brands or logos. No real living people. Every third-party file has a row in `assets/LICENSES.csv` with an allowed licence (CC0, CC BY, CC BY-SA, MIT, BSD, Apache-2.0, OFL).
+1. **We make our own assets, always.** Every model, texture, sound and line is made by a contributor for this project. No downloaded asset packs or libraries, nothing from any commercial game, no real brands or logos, no real living people. Fonts under the Open Font License are the one exception.
 2. **No placeholders on screen.** Unbuilt space is void. A contribution is a finished thing, however small.
 3. **Realistic, not uncanny.** True-to-life dimensions, materials and light. People are believable without chasing photographic faces.
 4. **One stage at a time.** Work on the open stage or on "open at any time" tasks. A stage opens only when the previous gate has passed.
@@ -74,7 +74,7 @@ That is also the build order. We start with nothing but the door and make it as 
 Review against the written standard, not taste. Work through this list in order and stop at the first failure.
 
 1. **Scope.** Does it match one claimed task in an open stage? Unrelated changes are split out.
-2. **Origin.** Is it the contributor's own work or openly licensed, with ledger rows and sign-off? Does anything look taken from a commercial game, a real brand or a real person? If in doubt, reject and ask for the source.
+2. **Origin.** Is it the contributor's own work, made for this project, with sign-off? Does anything look taken from a commercial game, a real brand or a real person? If in doubt, reject and ask for the source.
 3. **Automatic checks.** All passing. Never merge over a failing check.
 4. **Standard.** Compare against the standard for its type:
    - *Code:* test present and meaningful; rules on the host; no hidden dependence on one machine; readable.

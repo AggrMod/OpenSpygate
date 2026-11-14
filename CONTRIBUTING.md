@@ -29,10 +29,12 @@ This is the rule that protects the whole project.
 - **Nothing from commercial games.** No ripped or extracted models, textures, sounds, maps, names, characters or missions. No "fan remakes" of them either.
 - **No real brands or logos.** Cars, products and shops have invented makes.
 - **No real living people** as characters, and no real agencies as playable factions.
-- **Your own work** is contributed under the project licences: GPL-3.0-or-later for code, CC BY-SA 4.0 for everything else.
-- **Third-party material** is allowed only under CC0, CC BY, CC BY-SA, MIT, BSD, Apache-2.0 or OFL, and each file needs a row in `assets/LICENSES.csv` (path, source address, author, licence, date fetched, checksum). Non-commercial (NC) and no-derivatives (ND) licences are not accepted.
-- **Not accepted even though it is free elsewhere:** Mixamo animations (their terms forbid redistributing the files), Sonniss bundles (no redistribution), anything from model-ripping sites.
-- **Tool-assisted and AI-assisted work** is welcome if you say which tool was used in the pull request, you have checked the result yourself, and the tool's terms allow the output to be released under our licences.
+- **We make our own assets.** Every model, texture, material, animation, sound, piece of music and line of writing is made by a contributor for this project. Downloaded asset packs, scanned-texture libraries, stock sounds and animation libraries are not accepted, however free their licence. This is what makes the whole library ours to give away.
+- **Your work** is contributed under the project licences: MIT for code, CC BY 4.0 for everything else. Anyone may use it for anything.
+- **Reference is fine, copying is not.** Study photographs and real objects for dimensions and character; do not trace them, project them onto a model, or sample them into a texture.
+- **The one exception is fonts,** accepted under the SIL Open Font License with a row in `assets/LICENSES.csv`, until the project has its own.
+- **Code libraries** may be used under MIT, BSD, Apache-2.0 or similar permissive licences. No copyleft code, so the project can run on any engine.
+- **Tool-assisted and AI-assisted work** is welcome if you say which tool was used in the pull request, you have checked the result yourself, and the tool's terms allow the output to be released under our licences. A generative tool is a tool, like a brush; what it produces for you counts as your own work if those terms give you the rights to it.
 
 ## Sign-off
 

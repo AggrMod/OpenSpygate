@@ -1,6 +1,8 @@
-# Spycraft International
+# OpenSpygate
 
-An open-source, open-world, multiplayer espionage game, built in the open by anyone who wants to help.
+**Open Spygate International.** An open-source, open-world, multiplayer espionage game, built in the open by anyone who wants to help: people and AI engineers alike.
+
+Everything in it is made by the project's own contributors and given away under permissive licences. Use it, copy it, build on it, sell what you make with it. We are not trying to stop anyone from doing anything; we intend to stay ahead by building faster.
 
 You play a field officer for a fictional intelligence service in the great spy cities of the twentieth century, each in the era that made it famous: divided Berlin, wartime Lisbon, watched Moscow, crossroads Istanbul, neutral Vienna, sunlit Havana. The crowd is your cover. The verbs are real tradecraft: dead drops, signal marks, brush passes, shaking a tail, cover identities, recruiting sources, getting someone out.
 
@@ -19,7 +21,7 @@ A studio can only put so many people on a game. A public repository has no such 
 - **Small, self-contained tasks.** A building, a prop, a car, a pedestrian outfit, a mission, a sound, a translation. See [docs/TASKS.md](docs/TASKS.md).
 - **Written standards.** The art bible and technical design say exactly what "done" means for each kind of contribution.
 - **Automatic checks.** Every pull request runs tests, a licence check and performance budgets. A contribution that passes and matches the standard gets merged.
-- **Everything is original or openly licensed.** Nothing from any commercial game, ever.
+- **Everything is our own.** Every model, texture, sound and line is made by contributors for this project. Nothing from any commercial game, and no downloaded asset packs.
 
 ## Read first
 
@@ -41,6 +43,6 @@ A studio can only put so many people on a game. A public repository has no such 
 
 ## Licence
 
-- Code: [GPL-3.0-or-later](LICENSE).
-- Art, audio, writing and design documents: [CC BY-SA 4.0](LICENSE-ASSETS.md).
-- Third-party files keep their own open licences and are listed in `assets/LICENSES.csv`.
+- Code: [MIT](LICENSE).
+- Art, audio, writing and design documents: [CC BY 4.0](LICENSE-ASSETS.md). Credit "the OpenSpygate contributors" and do what you like.
+- Fonts are the only third-party files accepted, under the SIL Open Font License, and are listed in `assets/LICENSES.csv`.

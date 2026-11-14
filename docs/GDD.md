@@ -1,4 +1,4 @@
-# Spycraft International: Game Design Document
+# OpenSpygate: Game Design Document
 
 Version 0.1, 2026-11-14. Built from the four research reports in `docs/research/`. Where this document and a report disagree, this document wins; the reason is given in section 12.
 
@@ -151,5 +151,5 @@ Rules: the host PC decides what really happened. No open play with strangers. No
 - Names for the fictional services, handlers and car makes (a writing pass).
 - Recruitment design: the research did not cover it.
 - Whether the Compatibility renderer does occlusion culling; Mobile renderer speed on the tablets.
-- Font licence texts, before any font is used. Mixamo and Sonniss material is not accepted: their terms forbid redistributing the files, which an open repository does.
-- The title: a 1996 game is called "Spycraft: The Great Game". There is also a live SPYCRAFT trademark registration for entertainment services. The project name may need to change; see the open task on names.
+- Font licence texts, before any font is used. Fonts are the only third-party files accepted; every other asset is made by the project's contributors.
+- A proper trademark search for the name OpenSpygate (a quick web search found no game or mark with that name).

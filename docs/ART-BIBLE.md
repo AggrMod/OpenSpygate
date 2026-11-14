@@ -96,7 +96,7 @@ Author at the highest tier. The engine produces the lower ones on import.
 - No real brands, logos, maker's marks or product names. Invent them, or leave plates blank.
 - No real people's names on signs, plates or documents.
 - Text on assets is in the world's language and period lettering, and says something ordinary.
-- Built from your own work or openly licensed sources only, with ledger rows (see `CONTRIBUTING.md`).
+- Built entirely from your own work. Materials and textures are authored (procedural or painted), not downloaded scans. See `CONTRIBUTING.md`.
 
 ## 6. Characters
 
@@ -128,7 +128,7 @@ assets/<world>/<class>/<name>/
    - texel-density checker view
    - in game at eye level (1.6 m) from 1 m, 3 m and 10 m, in the lighting it will be seen in, next to existing assets
 3. In the pull request: real-world reference and dimensions, triangle count per LOD, texture sizes, material count, tools used.
-4. Ledger rows for anything third-party.
+4. A statement that the asset is your own work, and how its textures were made.
 
 ## 9. How it is reviewed
 

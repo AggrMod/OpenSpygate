@@ -1,5 +1,7 @@
 # Audio Guide
 
+> **Policy change, 2026-11-14.** The project now makes all of its own assets and accepts no third-party asset files (fonts excepted), and its licences are MIT for code and CC BY 4.0 for everything else. Where this document talks about using third-party sources or about CC BY-SA or GPL, it is out of date and is kept as background. `CONTRIBUTING.md` is the rule.
+
 Version 0.1; numbers are starting values to be calibrated in stage 2.
 
 Written 2026-11-14 by Foley (audio standards). Reviewed by Jim (project manager) before merge. This guide is the standard that audio contributions are checked against, in the same way `docs/ART-BIBLE.md` is for visual assets. A reviewer should be able to pass or fail a sound from this document and its measurements alone.

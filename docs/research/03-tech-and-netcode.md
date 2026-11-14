@@ -1,4 +1,4 @@
-# 03 — Technology & Netcode Research: Spycraft International
+# 03 — Technology & Netcode Research: OpenSpygate
 
 *Prepared 2026-11-14. Original open-world, multiplayer, third-person espionage game, built by one AI developer for a hobbyist.*
 
@@ -266,7 +266,7 @@ Keep the transport behind a `NetTransport` interface so ENet, EOS and WebRTC can
 ## 7. Recommended architecture sketch
 
 ```
-spycraft-international/   (Godot 4.7.2 project, text-only)
+openspygate/   (Godot 4.7.2 project, text-only)
 ├─ project.godot                 Jolt, physics interp ON, 60 Hz, gl_compatibility (A/B Mobile in week 1)
 ├─ autoload/
 │  ├─ Game.gd                    session state, world switching, save/load

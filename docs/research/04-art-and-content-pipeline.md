@@ -1,6 +1,8 @@
 # 04: Art and Content Pipeline Research
 
-**Project:** Spycraft International: original open-world, multiplayer, third-person espionage game set in several stylized city "worlds" (Berlin-like, Vienna-like and Istanbul-like cities).
+> **Policy change, 2026-11-14.** The project now makes all of its own assets and accepts no third-party asset files (fonts excepted), and its licences are MIT for code and CC BY 4.0 for everything else. Where this document talks about using third-party sources or about CC BY-SA or GPL, it is out of date and is kept as background. `CONTRIBUTING.md` is the rule.
+
+**Project:** OpenSpygate: original open-world, multiplayer, third-person espionage game set in several stylized city "worlds" (Berlin-like, Vienna-like and Istanbul-like cities).
 **Builder:** one AI developer who drives Blender 4.2 LTS by Python script (no hand modeling) and builds in Godot 4.x.
 **Hardware targets:** GTX 1660 desktop (6 GB) and Android tablets (mid/low tier).
 **Hard rules:** no placeholder art on screen (boxes and capsules do not ship, even in the first playable build). Everything is original or properly licensed, CC0 preferred. Nothing comes from commercial games.
@@ -275,7 +277,7 @@ Avoid any font tied to a real franchise's logo look.
 ### 8.1 Pipeline (all scripted, versioned, reproducible)
 
 ```
-spycraft-international/
+openspygate/
   art/
     palette/            palette_atlas.png (+ per-city LUTs), palette.json (swatch names -> UV)
     blender/

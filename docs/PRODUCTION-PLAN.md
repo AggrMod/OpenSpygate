@@ -1,4 +1,4 @@
-# Spycraft International: Production Plan
+# OpenSpygate: Production Plan
 
 Version 0.1, 2026-11-14. Companion to `GDD.md`.
 
@@ -9,7 +9,7 @@ Version 0.1, 2026-11-14. Companion to `GDD.md`.
 - **No placeholder art.** The first playable build already uses real, if few, assets.
 - **Everything tested.** Each system has a self-playing test that writes pictures and result files. Rules run on the host and are tested without graphics. Multiplayer tests run a host and several clients on this PC with simulated lag and packet loss.
 - **Review gates.** Every asset gets a turntable picture and an in-game street-level picture, checked next to its neighbours before it goes in. The project lead approves the look at the marked gates.
-- **Licence ledger.** Every outside file is logged in `assets/LICENSES.csv` with source, licence and checksum. Only CC0 and similarly open licences are allowed.
+- **Our own assets.** Every asset is made by the project's contributors and released under permissive licences. No downloaded asset packs. Fonts are the one exception and are logged in `assets/LICENSES.csv`.
 - **Open contribution.** Work is split into small tasks with written standards and automatic checks, so many people can build in parallel. See `TASKS.md` and `CONTRIBUTING.md`.
 
 ## Stages

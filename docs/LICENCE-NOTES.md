@@ -1,5 +1,7 @@
 # Licence notes for third-party sources
 
+> **Policy change, 2026-11-14.** The project now makes all of its own assets and accepts no third-party asset files (fonts excepted), and its licences are MIT for code and CC BY 4.0 for everything else. Where this document talks about using third-party sources or about CC BY-SA or GPL, it is out of date and is kept as background. `CONTRIBUTING.md` is the rule.
+
 Status: research notes, 2026-11-14, by Ledger (licence researcher, #6). Not legal advice. These notes report what each rights holder's own page says, and what could not be checked.
 
 **Method.** Each source was checked against the rights holder's own licence or terms page, using web fetch. Quotes are the text the fetch tool returned from those pages. They were not compared byte-for-byte with a saved copy, so re-check a quote before relying on it wording-for-wording. Where only a forum post, a third-party page, or a search summary was found, the row says "could not verify". The question asked for each source is whether files from it may be redistributed inside a public repository whose assets are CC BY-SA 4.0. The project's CONTRIBUTING.md already limits accepted licences to CC0, CC BY, CC BY-SA, MIT, BSD, Apache-2.0 and OFL, and excludes NC and ND.

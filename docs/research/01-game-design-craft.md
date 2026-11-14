@@ -1,4 +1,4 @@
-# 01 — Game Design Craft Research for *Spycraft International*
+# 01 — Game Design Craft Research for *OpenSpygate*
 
 *Research date: 2026-11-14. Design research only, no code. Every lesson below is used as craft knowledge; nothing (names, characters, maps, art, missions, feature names) is to be copied from any game cited.*
 
@@ -14,7 +14,7 @@ Every claim carries one of three tags:
 
 Thinly sourced areas are said to be thin. Some fetches failed: the Game Developer article on Hitman (2016) AI, the PC Gamer "MGS5 failure spectrum" article, and Chris Hecker's own design page (site down). Claims tied to those sources are snippet-level only.
 
-**Name check.** *Spycraft: The Great Game* (Activision, 1996) is an existing espionage adventure game [Unverified, from memory]. "Spycraft International" is not the same name, but it is close. Run a trademark or store search before committing to the title publicly.
+**Name check.** This research was done under an earlier working title that was close to *Spycraft: The Great Game* (Activision, 1996). The project has since been named OpenSpygate.
 
 ---
 
@@ -314,7 +314,7 @@ Thinly sourced; [Unverified] craft practice:
 
 ---
 
-## 6. Recommendations for *Spycraft International*
+## 6. Recommendations for *OpenSpygate*
 
 These are recommendations, built on the sources above. All feature names below are original placeholders.
 

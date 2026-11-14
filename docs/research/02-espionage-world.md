@@ -1,4 +1,4 @@
-# 02 — The Real World of Espionage (research for *Spycraft International*)
+# 02 — The Real World of Espionage (research for *OpenSpygate*)
 
 Status: research pass 1, 2026-11-14. Public historical and journalistic sources only. This is fact-gathering. Fictionalization (agency names, characters, invented operations) happens in a later design pass.
 

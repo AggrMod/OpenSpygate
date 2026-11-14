@@ -8,18 +8,45 @@ const START: Vector3 = Vector3(0.6, 0.0, 7.5)     # the player starts here, faci
 
 var player: Player
 var door: Node3D
+var street: Street
+var car: Vehicle
 
 
 func _ready() -> void:
 	_build_environment()
 	_build_floor()
 	_build_door()
+	_build_street()
 	player = Player.new()
 	player.position = START
 	add_child(player)
 	player.look_at(Vector3(0.0, 0.0, 0.0), Vector3.UP)
 	player.rotation.x = 0.0
 	player.rotation.z = 0.0
+
+
+func _build_street() -> void:
+	# Behind where you start: the first road of the city, and a car under a street lamp.
+	street = Street.new()
+	street.name = "Street"
+	street.position = Vector3(0.0, 0.0, 22.0)
+	add_child(street)
+	street.build()
+	if ResourceLoader.exists(Vehicle.MODEL):
+		car = Vehicle.new()
+		car.name = "Car"
+		add_child(car)
+		car.global_transform = Transform3D(Basis.looking_at(Vector3(1.0, 0.0, 0.0)), Vector3(6.0, 0.05, 24.2))
+
+
+func _process(_delta: float) -> void:
+	if car == null or not Input.is_action_just_pressed("interact"):
+		return
+	if car.driver != null:
+		if absf(car.speed) < 3.0:
+			car.leave()
+	elif player.global_position.distance_to(car.global_position) < 3.2:
+		car.enter(player)
 
 
 func _build_environment() -> void:

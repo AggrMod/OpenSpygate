@@ -21,6 +21,7 @@ OpenSpygate (Open Spygate International) is an open-source, open-world, multipla
 | Next gate | Stage 0: design direction agreed. Then the project lead's approval of the door |
 | After that | Stage 1 (foundations), then stage 3: the first corner behind the door |
 | Decided | The name OpenSpygate, permissive licences (MIT and CC BY 4.0), our-own-assets rule, realistic art direction, Berlin 1961-63 as the first world, host-decides multiplayer. Engine: Godot 4.7, to be confirmed by putting the finished door on screen (the same asset can be compared in another engine) |
+| Direction (2026-11-14) | The project lead has set the target: a modern-day, open-source competitor to the big open-world city games. The Cold War story in `docs/STORY.md` and the period setting in `docs/GDD.md` are set aside and those documents are out of date until rewritten. The first modern pieces exist: a saloon car of our own design that can be entered and driven (`drive` test passes), on a first stretch of lit road in the void |
 | Awaiting the project lead | The story in `docs/STORY.md`, including its change to which year each city is set in |
 | Not decided | Names of the fictional services, recruitment design (draft in review) |
 | Last updated | 2026-11-14 |

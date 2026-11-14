@@ -9,6 +9,7 @@ const ACTIONS: Dictionary = {
 	"move_right": [KEY_D, KEY_RIGHT],
 	"walk_fast": [KEY_SHIFT],
 	"interact": [KEY_E],
+	"handbrake": [KEY_SPACE],
 	"release_mouse": [KEY_ESCAPE],
 }
 

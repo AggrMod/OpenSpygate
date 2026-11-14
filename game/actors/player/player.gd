@@ -10,6 +10,7 @@ const LOOK_SENS: float = 0.0022
 const BOB_HEIGHT: float = 0.012
 
 var camera: Camera3D
+var seated: bool = false
 var _pitch: float = 0.0
 var _stride: float = 0.0
 
@@ -46,6 +47,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if seated:
+		return
 	var input := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var wish := (global_transform.basis * Vector3(input.x, 0.0, input.y))
 	wish.y = 0.0
@@ -63,6 +66,16 @@ func _physics_process(delta: float) -> void:
 	_stride += ground_speed * delta
 	var bob := sin(_stride * TAU / 1.4) * BOB_HEIGHT * clampf(ground_speed / WALK_SPEED, 0.0, 1.0)
 	camera.position.y = EYE_HEIGHT + bob
+
+
+## Sitting in a vehicle: the body stops moving and colliding, and the vehicle's camera takes over.
+func set_seated(value: bool) -> void:
+	seated = value
+	velocity = Vector3.ZERO
+	collision_layer = 0 if value else 1
+	collision_mask = 0 if value else 1
+	if not value:
+		camera.make_current()
 
 
 ## Where the player is looking, for interaction checks.

@@ -21,6 +21,7 @@ OpenSpygate (Open Spygate International) is an open-source, open-world, multipla
 | Next gate | Stage 0: design direction agreed. Then the project lead's approval of the door |
 | After that | Stage 1 (foundations), then stage 3: the first corner behind the door |
 | Decided | The name OpenSpygate, permissive licences (MIT and CC BY 4.0), our-own-assets rule, realistic art direction, Berlin 1961-63 as the first world, host-decides multiplayer. Engine: Godot 4.7, to be confirmed by putting the finished door on screen (the same asset can be compared in another engine) |
+| Awaiting the project lead | The story in `docs/STORY.md`, including its change to which year each city is set in |
 | Not decided | Names of the fictional services, recruitment design (draft in review) |
 | Last updated | 2026-11-14 |
 
@@ -41,7 +42,7 @@ That is also the build order. We start with nothing but the door and make it as 
 ## 4. Read in this order
 
 1. This file.
-2. `docs/GDD.md`: what the game is.
+2. `docs/GDD.md`: what the game is, and `docs/STORY.md`: the story it tells (a proposal awaiting the project lead).
 3. `docs/PRODUCTION-PLAN.md`: the stages and the gate for each.
 4. `docs/TASKS.md`: what is open right now, and `team/README.md`: who is working on what, and how to register.
 5. `CONTRIBUTING.md`: how to submit, and the licence rules.

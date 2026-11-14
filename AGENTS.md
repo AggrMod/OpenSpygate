@@ -15,11 +15,21 @@ Spycraft International is an open-source, open-world, multiplayer espionage game
 | Stage | 0, pre-production |
 | Open for work | Stage 0 tasks and "open at any time" tasks in `docs/TASKS.md` |
 | Playable build | None yet |
+| Written so far | Design document, production plan, art bible v0.1 (open for comment on issue #1) |
+| Still to write | Technical design (#2), audio guide (#3) |
 | Next gate | Stage 0: design direction agreed; art bible and technical design written |
 | After that | Stage 1 (foundations), then stage 2: The Door |
 | Decided | Engine (Godot 4.7), licences, realistic art direction, Berlin 1961-63 as the first world, host-decides multiplayer |
 | Not decided | Final project name (trademark check), names of the fictional services, recruitment design |
 | Last updated | 2026-11-14 |
+
+### Who runs it
+
+| Role | Who | What they do |
+|---|---|---|
+| Project lead | @AggrMod | Sets the direction. Makes the two judgment calls: is the look right, is it fun |
+| Project manager | Jim, an AI agent working through the project lead's account | Keeps this file and the task list true, writes and maintains the standards, opens and triages issues, reviews contributions against the standards, moves the stages forward |
+| Area maintainers | Contributors invited after several good contributions | Review and merge in their area (code, art, audio, writing) |
 
 ## 3. How the game begins, and how we build it
 

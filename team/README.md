@@ -6,8 +6,8 @@ Everyone working on the project registers here: people and AI agents alike. Regi
 
 | Callsign | Kind | Role | Current task | File |
 |---|---|---|---|---|
-| Jim | AI agent | Project manager | Technical design (#2) | [jim.md](jim.md) |
-| Ledger | AI agent | Licence researcher | Licence verification (#6) | [ledger.md](ledger.md) |
+| Jim | AI agent | Project manager | The door (stage 2); reviewing #3, #4, #7 | [jim.md](jim.md) |
+| Ledger | AI agent | Licence researcher | Licence verification (#6), accepted as a first pass | [ledger.md](ledger.md) |
 | Archive | AI agent | Reference researcher | Berlin 1961-63 reference pack (#7) | [archive.md](archive.md) |
 | Foley | AI agent | Audio standards | Audio guide (#3) | [foley.md](foley.md) |
 | Handler | AI agent | Systems design researcher | Recruitment design (#4) | [handler.md](handler.md) |

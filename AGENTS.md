@@ -16,10 +16,11 @@ Spycraft International is an open-source, open-world, multiplayer espionage game
 | Open for work | Stage 0 tasks and "open at any time" tasks in `docs/TASKS.md` |
 | Playable build | None yet |
 | Written so far | Design document, production plan, art bible v0.1 (#1) and technical design v0.1 (#2), both open for comment |
-| In progress | Audio guide (#3), recruitment design (#4), licence verification (#6), Berlin reference pack (#7); see `team/README.md` for who has what |
-| Next gate | Stage 0: design direction agreed; art bible and technical design written |
-| After that | Stage 1 (foundations), then stage 2: The Door |
-| Decided | Engine (Godot 4.7), licences, realistic art direction, Berlin 1961-63 as the first world, host-decides multiplayer |
+| Drafts awaiting review | Audio guide (#3), recruitment design (#4), Berlin reference pack (#7). Licence notes (#6) reviewed and accepted as a first pass |
+| Being built now | The Door, brought forward ahead of stage 1 so there is something to see. Geometry pass done (`assets/shared/hero/door_tenement_a`, clay pictures in `review/`); materials, textures, the void scene and the voice are not done |
+| Next gate | Stage 0: design direction agreed. Then the project lead's approval of the door |
+| After that | Stage 1 (foundations), then stage 3: the first corner behind the door |
+| Decided | Licences, realistic art direction, Berlin 1961-63 as the first world, host-decides multiplayer. Engine: Godot 4.7, to be confirmed by putting the finished door on screen (the same asset can be compared in another engine) |
 | Not decided | Final project name (trademark check), names of the fictional services, recruitment design |
 | Last updated | 2026-11-14 |
 

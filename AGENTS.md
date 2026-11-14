@@ -15,8 +15,8 @@ Spycraft International is an open-source, open-world, multiplayer espionage game
 | Stage | 0, pre-production |
 | Open for work | Stage 0 tasks and "open at any time" tasks in `docs/TASKS.md` |
 | Playable build | None yet |
-| Written so far | Design document, production plan, art bible v0.1 (open for comment on issue #1) |
-| Still to write | Technical design (#2), audio guide (#3) |
+| Written so far | Design document, production plan, art bible v0.1 (#1) and technical design v0.1 (#2), both open for comment |
+| In progress | Audio guide (#3), recruitment design (#4), licence verification (#6), Berlin reference pack (#7); see `team/README.md` for who has what |
 | Next gate | Stage 0: design direction agreed; art bible and technical design written |
 | After that | Stage 1 (foundations), then stage 2: The Door |
 | Decided | Engine (Godot 4.7), licences, realistic art direction, Berlin 1961-63 as the first world, host-decides multiplayer |
@@ -42,7 +42,7 @@ That is also the build order. We start with nothing but the door and make it as 
 1. This file.
 2. `docs/GDD.md`: what the game is.
 3. `docs/PRODUCTION-PLAN.md`: the stages and the gate for each.
-4. `docs/TASKS.md`: what is open right now.
+4. `docs/TASKS.md`: what is open right now, and `team/README.md`: who is working on what, and how to register.
 5. `CONTRIBUTING.md`: how to submit, and the licence rules.
 6. The standard for your kind of work, once written: `docs/ART-BIBLE.md`, `docs/TECH-DESIGN.md`, `docs/AUDIO-GUIDE.md`. If the standard you need does not exist yet, writing it is the task.
 7. `docs/research/`: background and sources, when you need the reasoning.

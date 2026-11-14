@@ -32,15 +32,19 @@ HANDLE_X, HANDLE_Z = -HX + 0.058, Z0 + 1.05
 BEVEL = 0.0012
 
 
+TAG = {"horiz": 0.0, "bare": 0.0}   # read by Part.add: grain direction and unpainted wood
+
+
 class Part:
     """Collects raw geometry for one object."""
     def __init__(self, name, material):
         self.name, self.material = name, material
-        self.verts, self.faces = [], []
+        self.verts, self.faces, self.tags = [], [], []
 
     def add(self, verts, faces):
         o = len(self.verts)
         self.verts.extend(verts)
+        self.tags.extend([(TAG["horiz"], TAG["bare"])] * len(verts))
         self.faces.extend([tuple(i + o for i in f) for f in faces])
 
     def add_bm(self, bm):
@@ -50,9 +54,16 @@ class Part:
 
     def build(self, parent=None, origin=None):
         me = bpy.data.meshes.new(self.name)
-        me.from_pydata([tuple(v) for v in self.verts], [], self.faces)
-        bm = bmesh.new(); bm.from_mesh(me)
-        bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=1e-6)
+        bm = bmesh.new()
+        lh, lb = bm.verts.layers.float.new("horiz"), bm.verts.layers.float.new("bare")
+        vs = []
+        for co, (h, b) in zip(self.verts, self.tags):
+            v = bm.verts.new(co); v[lh] = h; v[lb] = b; vs.append(v)
+        for f in self.faces:
+            try:
+                bm.faces.new([vs[i] for i in f])
+            except ValueError:
+                pass
         bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
         for e in bm.edges:
             if len(e.link_faces) == 2:
@@ -205,8 +216,10 @@ rails = [  # (z_lo, z_hi)
 ]
 for sx in (-1, 1):  # stiles run the full height
     leaf.add_bm(box((sx * HX, -HT, Z0), (sx * (HX - STILE), HT, Z1)))
+TAG["horiz"] = 1.0
 for zl, zh in rails:
     leaf.add_bm(box((-(HX - STILE), -HT, zl), (HX - STILE, HT, zh)))
+TAG["horiz"] = 0.0
 openings = []
 for (_, zl), (zh, _) in zip(rails[:-1], rails[1:]):
     leaf.add_bm(box((-MUNTIN / 2, -HT, zl), (MUNTIN / 2, HT, zh)))  # muntin between rails
@@ -241,7 +254,9 @@ for sx in (-1, 1):
         yf = out * JAMB_D / 2
         frame.add_bm(box((sx * (OPEN_X - 0.004), yf, 0), (sx * (OPEN_X + JAMB_W + 0.006), yf + out * 0.034, 0.21),
                          bevel=0.004, segs=3))
+TAG["horiz"] = 1.0
 frame.add_bm(box((-OPEN_X, -JAMB_D / 2, HEAD_Z), (OPEN_X, JAMB_D / 2, top)))
+TAG["horiz"] = 0.0
 frame.add_bm(box((-OPEN_X, -HT - 0.0225, HEAD_Z - 0.012), (OPEN_X, -HT - 0.003, HEAD_Z)))
 # casing: (distance out from the opening edge, height off the frame face), a closed section
 CASING = [(0.0, 0.0), (0.0, 0.011), (0.003, 0.0135), (0.009, 0.0150), (0.012, 0.0185), (0.017, 0.0200),
@@ -272,7 +287,9 @@ for i in range(segx):
 for j in range(segy):
     bm.faces.new((grid[j][0], grid[j + 1][0], base[j + 1][0], base[j][0]))
     bm.faces.new((base[j][segx], base[j + 1][segx], grid[j + 1][segx], grid[j][segx]))
+TAG["horiz"], TAG["bare"] = 1.0, 1.0
 frame.add_bm(bm)
+TAG["horiz"], TAG["bare"] = 0.0, 0.0
 frame_ob = frame.build(root)
 
 # ---- hardware ------------------------------------------------------------------------------------

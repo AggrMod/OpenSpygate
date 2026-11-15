@@ -312,6 +312,7 @@ def shot(name, loc, target, lens, res, fstop=None):
     if fstop:
         cam.data.dof.focus_distance = (Vector(target) - Vector(loc)).length; cam.data.dof.aperture_fstop = fstop
     sc.render.resolution_x, sc.render.resolution_y = res
+    sc.render.use_stamp_filename = False      # keep the machine's file path out of the picture's metadata
     sc.render.filepath = os.path.join(ASSET, "review", "look_" + name + ".png")
     bpy.ops.render.render(write_still=True)
     print("SHOT", name)

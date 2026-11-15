@@ -1,6 +1,6 @@
 class_name Player
 extends CharacterBody3D
-## The player in the void. First person: you have no face and no cover yet. You get those on the other side of the door.
+## The player on foot. First person for now: the third-person character is stage 2 of the plan.
 
 const EYE_HEIGHT: float = 1.6
 const WALK_SPEED: float = 1.5      # an unhurried walk, metres per second
@@ -35,7 +35,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not seated:
 		var motion := event as InputEventMouseMotion
 		rotate_y(-motion.relative.x * LOOK_SENS)
 		_pitch = clampf(_pitch - motion.relative.y * LOOK_SENS, -1.35, 1.35)

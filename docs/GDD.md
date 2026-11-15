@@ -1,155 +1,154 @@
 # OpenSpygate: Game Design Document
 
-Version 0.1, 2026-11-14. Built from the four research reports in `docs/research/`. Where this document and a report disagree, this document wins; the reason is given in section 12.
+Version 0.2, 2026-11-14. Rewritten for the direction the project lead set on 2026-11-14: a modern-day, open-world city game. Version 0.1 described a Cold War espionage game; it is in the git history, and the story proposal that went with it is in `docs/archive/cold-war/`. The research reports in `docs/research/` were written for the old plan; where this document and a report disagree, this document wins (section 13).
+
+This document says what is decided and what is not. Where something is the project lead's call and still open, it says so. Do not fill the gaps in a pull request.
 
 ## 1. The game in one paragraph
 
-An open-world, third-person, multiplayer espionage game. You are a field officer for a fictional intelligence service, working the great spy cities of the twentieth century, each in the era that made it famous. You walk, drive and ride through a living city, run sources, service dead drops, shake surveillance, slip into embassies under cover, and get out before the city closes around you. Friends join your city as fellow officers, or as the opposition.
+An open-source, modern-day, open-world city game. You go on foot and in vehicles through a living fictional city, alone or with friends. The city runs by itself: traffic, people on the pavements, police who respond, shops and money. It is meant to stand next to the big commercial open-world city games, and to be built in the open by a crowd of people and AI engineers, every asset made by us.
 
-Everything in it is original: no names, characters, maps, missions or art from any existing game.
+Everything in it is original: no names, characters, maps, vehicles, missions, interface or art from any existing game, and no real brands or real living people.
 
 ## 2. Pillars
 
-1. **The crowd is your cover.** Cities are dense with people, and blending into them is the main skill. Behaviour gives you away, not a glowing marker.
-2. **Real tradecraft, made playable.** Dead drops, signal sites, brush passes, surveillance-detection routes, cover identities and exfiltrations are the verbs. Each is a quick action whose result changes the world, never a long minigame.
-3. **Getting caught is the start of a scene.** Suspicion leads to a scramble, a chase, a capture and a prisoner swap. Missions almost never restart.
-4. **An open city, not a mission menu.** Between operations the city is yours: drive it, learn it, scout it, recruit in it, find its secrets. Systems (crowds, police, counter-intelligence, traffic) make stories without a script.
-5. **Each world is a different game mood.** Divided Berlin, glamorous Lisbon, paranoid Moscow, mercantile Istanbul, neutral Vienna, sunlit Havana.
+1. **A city that feels real at street level.** Kerbs, drains, signals, shopfronts, wet asphalt at night, built to true dimensions and materials. The city is judged at eye level, not from the air.
+2. **Driving that feels good.** Weight, grip, sound and camera tuned until simply driving round the block is a pleasure.
+3. **A systemic world, not scripted set pieces.** Traffic, pedestrians, police response and an economy make things happen without a script. The stories come from systems meeting.
+4. **Every asset made by us, by script wherever possible.** Buildings, streets, props and vehicles come from generators and scripts kept in the repository, so content scales with contributors and anyone can rebuild it.
+5. **Built to be modded and extended.** Text files, documented formats and small parts, so anyone can add a vehicle, a building style or a district.
 
-## 3. Platforms and players
+## 3. The city
+
+The city is fictional: a present-day American river-port city. Its working name is **Calder**. The name is a working title; settling it is a task (`docs/TASKS.md`). No real city is copied: real places are studied for how they are built, never reproduced.
+
+Planned districts, built outward one finished piece at a time:
+
+| District | What it is |
+|---|---|
+| Downtown | The first to be built. Street grid, towers and older commercial blocks, signals on every corner |
+| The bluffs | High ground above the river: older houses and streets that climb |
+| Riverfront and port | Quays, cranes, warehouses, the river itself |
+| Rail yards and industry | Tracks, sheds, works, freight |
+| Midtown strip | A commercial road: shops, car lots, filling stations, signs |
+| Suburbs | Houses, yards, cul-de-sacs, wide arterial roads |
+| The flood plain | Across the bridge: flat, low land on the far bank |
+
+The order after downtown is not fixed. A district is added only when the one before it meets the standard, and the edge of what is built is void.
+
+How the city is made:
+
+- **A hand-designed street plan** with generated buildings and street dressing on it, and hand-built landmarks.
+- **Generators, not hand-placed copies.** A building generator, a street and road-network builder, rule-based street furniture. Each is a script in the repository that anyone can run.
+- **True to how such places are really built.** American street widths, kerb heights, lane widths, signal layouts and building types, each taken from a stated real reference.
+
+## 4. Premise and story
+
+**Not decided.** The premise and story are the project lead's call and are open. There is no plot, no set of characters and no factions yet, and none should be written into the game or the documents until the project lead decides.
+
+What is decided is how the game begins (section 9). The Cold War story proposal is kept in `docs/archive/cold-war/` for the record; it is not the plan.
+
+## 5. Content rules
+
+- **The content rating is not decided.** It is the project lead's call. Until it is set, nothing beyond teen-level content is built: no graphic gore, no sexual content, no realistic depiction of drug use.
+- Fictional city, companies, products and people. No real brands, logos, trademarks or real living people, on signs, vehicles, radio or anywhere else.
+- Nothing from any commercial game: no names, places, vehicles, characters, missions or interface.
+- Names on signs, plates, shops and streets are invented and checked against real organisations and brands before they go in.
+
+## 6. Platforms and players
 
 | | Decision |
 |---|---|
 | Lead platform | Windows and Linux PCs. Reference machine: GTX 1660 SUPER, Ryzen 5 4600G, 1080p at 60 fps. A PC hosts. |
-| Second tier | Android tablets and phones join the same sessions at a lower quality tier (30 fps target). |
-| Engine | Godot 4.7.2. Game systems are our own code on top. |
-| Session size | 1 to 6 players per city at first; 8 to 12 later with a headless server. |
-| Internet play | Home Wi-Fi discovery first, Tailscale for friends, Epic Online Services P2P later if needed. |
+| Second tier | Android tablets and phones may join at a lighter quality tier later. Not a target for stage 1. |
+| Engine | Godot 4.7, with our own systems on top. See section 6.1. |
+| Session size | Solo first. Friends join later (stage 5); the session size is set by measurement then. |
+| Internet play | Home network first; internet play is decided in stage 5. |
 
-## 4. Tone and content rules
+### 6.1 Engine
 
-- Spy-thriller tone, about the level of a teen-rated adventure film. Tension, chases, fistfights, tranquilizer darts, arrests.
-- Takedowns are non-lethal. Being caught leads to interrogation-room scenes and prisoner swaps, not death.
-- Recruiting sources works on trust: belief, recognition, help, fair payment. No seduction or blackmail mechanics.
-- Real cities and real techniques; fictional agencies, people and plots. No real living people as characters.
-- Real atrocities and victims appear only in a respectful in-game history codex, never as missions.
-- Cities are set in a stylized past (1940s to 1980s), away from current conflicts.
+We build on Godot 4.7 (Forward+ renderer, Jolt physics, GDScript), with our own systems on top: our own car physics, streaming, traffic and networking. The reasons:
 
-## 5. Core loops
+- It runs on modest hardware, so contributors do not need an expensive PC.
+- Its scenes, resources and scripts are text files, so every change can be reviewed in the open.
+- It is under the MIT licence, so nothing limits what we and others do with the game.
 
-**Second to second:** walk, drive, watch, blend, take one covert action, slip away.
+The project lead has raised Unreal. The question is open. It will be settled by putting the same assets side by side in both engines and looking at them, not by argument. Until then, work goes into Godot, and assets are kept engine-neutral where that is cheap: Blender sources and scripts, glTF exports, real-world units.
 
-**An operation (10 to 20 minutes):**
+## 7. What you do
 
-1. **Brief.** A handler gives a goal with several possible approaches.
-2. **Recon.** Watch the place, tag people and cameras, learn schedules.
-3. **Prep.** Choose a cover, gadgets and an exit route; call in a recruited source if you have one.
-4. **Execute.** Social stealth through public and private spaces.
-5. **Exfil.** Shake any pursuit through crowds, transit, vehicles or a safe house.
-6. **Debrief.** Pay, reputation, and a plain log of what gave you away.
+The things to do in the city are found in stage 4 ("find the fun") on four blocks and judged by the project lead. Until then, this section lists only what the systems are, not the activities built on them.
 
-**Free roam (between operations):** scout future targets, spot and develop sources, service drops, find signal sites and history-codex entries, buy and stash vehicles, set up safe houses, take small street jobs (courier runs, counter-surveillance for another officer, photo assignments).
+**Second to second:** walk, run, get into a car, drive, park, get out.
 
-**Campaign:** new contacts, districts, gadgets, covers and cities. The city's security adapts to your habits.
+**The systems that make the city run:**
 
-## 6. The Exposure system (in place of a wanted level)
-
-Three layers, so a mistake costs in proportion to its size.
-
-1. **Suspicion (per person, seconds).** A meter over each watcher fills with distance, line of sight, light, your behaviour (running, loitering where you don't belong, carrying contraband) and whether your cover fits the space. It drains when you break contact. Certain "sharp-eyed" roles see through certain covers. Watchers can be wrong and fix on the wrong person.
-2. **Alert (per operation, minutes).** Six named tiers with fixed effects the player can read ahead of time, a visible countdown to the next tier, and jumps for loud events.
-
-   | Tier | Effect |
-   |---|---|
-   | 0 | Normal |
-   | 1 | Extra watchers on cameras |
-   | 2 | Private areas lock; better covers needed |
-   | 3 | Plain-clothes counter-agents enter the crowd |
-   | 4 | Checkpoints on district exits |
-   | 5 | Lockdown and manhunt |
-
-   At tier 5, capture leads to an escape or a prisoner swap, not a restart.
-3. **Cover burn and city memory (persistent).** A cover seen doing something illegal is burned in that district for a while. Districts adapt to repeated tactics: many rooftop entries bring rooftop watchers.
-
-## 7. Tradecraft verbs
-
-| Verb | How it plays |
-|---|---|
-| Dead drop | Hide an item in a world prop. Another player or a source collects it. Anyone watching the spot can find it. |
-| Signal site | Leave or read a chalk mark, tape strip or window object. A wrong mark aborts the meeting. |
-| Brush pass | Two people cross in a crowd inside a short window, out of a watcher's sight. |
-| Surveillance-detection route | Walk or drive a route with choke points; the game flags faces and cars you've seen twice. |
-| Cover and legend | A cover opens some spaces and conversations and closes others. |
-| Photograph / bug / tap | Under ten seconds each; the result reveals a schedule, a code or a conversation. |
-| Recruit a source | Spot, assess, develop over several meetings, then pitch. Sources become services on the map: a doorman, a cab driver, a clerk. |
-| Exfiltration | A multi-stage escort with signals, a fallback, and a nerve meter at the checkpoint. |
-| Numbers station | A radio broadcast at a set hour, decoded with a one-time pad, gives a secret objective. |
-| Prisoner swap | Captured players are exchanged at a bridge in a staged event. |
-
-## 8. Worlds
-
-Real city names, each at its famous moment. Landmarks are original designs inspired by the place, not copies.
-
-| Order | World | Mood and signature play |
+| System | What it does | Stage |
 |---|---|---|
-| 1 | Berlin, 1961-63 | Divided city, two halves, the bridge swap, the wiretap tunnel, sector crossings. Exercises every core system. |
-| 2 | Lisbon and Estoril, 1941 | Casino social stealth, harbour, exit visas for refugees, running an invented spy network. |
-| 3 | Moscow, 1985 | Hard mode. Watched everywhere; ends in a border exfiltration. |
-| 4 | Istanbul, 1943 | The information market: hotels, bazaar, ferries, servant-cover embassy job. |
-| 5 | Vienna, 1950s | The neutral social hub: coffeehouses, sewers, no takedowns allowed. |
-| 6 | Havana, 1962 | Recon, numbers stations, a comic mission. |
+| Time of day and weather | Sun, sky and street lighting through the day and night; rain later | 1 |
+| Driving | Our own raycast-suspension car with a gearbox, tyre grip and sound | 1 |
+| The person | Third-person character, animation, getting in and out of cars | 2 |
+| Traffic | Cars on lanes, obeying signals, giving way, parking | 3 |
+| Pedestrians | People on the pavements, crossing at signals, reacting | 3 |
+| Police response | Officers who respond to what happens in the street | 4 or later |
+| Economy | Money, buying and selling, shops | 4 or later |
 
-Bench: Bern/Geneva, Tangier, Washington suburbs, a fictional Harbour City, Beirut 1962.
+## 8. Vehicles and travel
 
-Each world is built district by district. A district is about 600 m square and dense: every block has something to do, watch or use. Berlin launches with one district and grows to five (checkpoint zone, tenement quarter, eastern boulevard, rail yards, western shopping street).
+- Original vehicles only, of invented makes, with no badges from real makers and no shapes copied from real models. Proportions and dimensions are true to their class.
+- Our own driving model: four suspension rays, load-limited tyre grip, a gearbox, on a plain rigid body.
+- The first is a saloon (`assets/shared/vehicle/sedan_a`). More body styles are open tasks.
+- Traffic follows lanes from the road network, built from the same data as the streets.
 
-## 9. Vehicles and travel
+## 9. How the game begins
 
-Vehicles are in the game, as a later production stage and not in the first playable.
+The game opens in an empty black void with one door, detailed down to the grain and the wear on the handle, and a voice saying that if you walk in, there is no turning back. The door opens onto the city.
 
-- Original period cars, vans, taxis, trams, motorcycles and boats, with invented makes and no badges.
-- Arcade handling on our own raycast car. The driver's device simulates the car; others see it smoothed.
-- Traffic follows lanes from the road map, run identically on every device from a shared seed.
-- Cars matter for tailing, surveillance-detection routes, chases and exfiltration. Pedestrian crowds stay the heart of the stealth.
-- Travel between worlds goes through an airport or station scene in each city.
+The door was the first asset built and the standard for everything after it. The void-and-door scene exists; the door cannot be opened yet and the voice is not recorded. The voice line and the opening animation are open tasks.
 
 ## 10. Multiplayer
 
 Built in this order, each on the one before:
 
 1. **Solo.** Also the practice ground.
-2. **Co-op, 2 to 4 friends,** private session, in free roam and on operations.
-3. **Hidden-agent rounds,** 1v1 or 2v2, opt-in: one side hides in the crowd doing small tasks, the other hunts with a single arrest.
-4. **Two-service free roam** in Berlin: friends split between the two halves of the city.
+2. **Friends in one city,** a private session, from stage 5.
 
-Rules: the host PC decides what really happened. No open play with strangers. Nothing in the interface may reveal that a hidden human is nearby. Dead drops and marks left by friends persist between sessions.
+Rules: the host PC decides what really happened. No open play with strangers until the project lead decides otherwise. What modes come after that depends on the premise.
 
 ## 11. Look and sound
 
-- **Style:** realistic. True-to-life dimensions, physically based materials (wood grain, worn brass, wet stone, chipped paint), real light and shadow, fog and a colour grade per city. Realistic, not uncanny: the aim is a world that looks solid and believable, not photographic human faces.
-- **Level of detail:** higher than a closed studio can afford across a whole world, because every asset is its own small task with an owner. Each asset is built to be looked at closely.
-- **The opening:** the game starts in an empty black void with one door, detailed down to the grain and the wear on the handle, and a voice saying that if you walk in, there is no turning back. That door is also the first asset built and the standard for everything after it. The world is then built outward from behind it. Where nothing is built yet there is void, never a placeholder.
-- **Hardware:** the PC tier carries the full detail. Tablets get the same assets at lower levels of detail and texture size. How far the reference graphics card can be pushed is measured on the door and the first room, not assumed.
-- **Gate:** the door in the void, approved by the project lead, before anything else is built to that standard.
-- **Characters:** one shared skeleton, realistic proportions, modular bodies, heads and period clothing with real fabric materials. Faces are believable and slightly simplified to stay clear of the uncanny valley.
-- **Sound:** period-flavoured adaptive music that layers up with the alert tier, footsteps by surface (noise is a gameplay value), voiced handler briefings generated offline with an openly licensed voice model and given a radio treatment.
-- **Interface:** dossier folders, typewriter text, rubber stamps, map-room maps, analog-tech readouts.
+- **Style:** realistic. True-to-life dimensions, physically based materials (asphalt, concrete, glass, painted steel, brick), real light and shadow, by day and by night. Realistic, not uncanny: the aim is a city that looks solid and believable, not photographic human faces.
+- **Level of detail:** higher than a closed studio can afford across a whole city, because every asset is its own small task with an owner, and generators carry the volume.
+- **Gate:** the first downtown block, approved by the project lead on the PC, before anything else is built to that standard (stage 1).
+- **Characters:** one shared skeleton, realistic proportions, modular bodies, heads and present-day clothing. Faces are believable and slightly simplified.
+- **Sound:** engines, tyres and wind from our own synthesis; footsteps by surface; city ambience by district and time of day; radio stations with original idents and music only.
+- **Interface:** our own design. Nothing taken from any commercial game.
 
-## 12. Where this departs from the research
+## 12. Modding and extending
+
+- Everything is text where the engine allows: scenes, resources, scripts, data.
+- Generators take parameters, so a new building style or vehicle body is a new set of parameters or a new script, not a new pipeline.
+- Formats are written down in `docs/TECH-DESIGN.md` as they are made.
+
+## 13. Where this departs from the research
 
 | Report said | This document says | Why |
 |---|---|---|
-| No vehicle traffic simulation | Vehicles and lane traffic, as a later stage | The game we set out to make is an open-world city game. Lane-following traffic is modest work once the road map exists. |
-| One district only | One district first, then grow by districts and cities | Production is long and staged; pipelines make later districts cheap. |
-| Avoid procedural city generation | Generated buildings and dressing on a hand-designed street plan with hand-built landmarks | The failure case was generating the city itself with no game. Here the game loop is proven in one block first. |
-| Youngest age rating, no takedowns in places | Teen-level thriller with non-lethal takedowns | It is an open-world action game that should still be playable in a family home. |
-| Tablets as an equal target | PC leads, tablets are a second tier | Raises the visual ceiling. |
-| Low-poly toon style, because scripted modelling cannot make realism look good | Realistic assets with physically based materials | The project lead's direction. An open crowd of artists and agents, each owning one asset, can reach detail that one scripted pipeline cannot. The report's warning still stands as a risk: realism has to be held to measurable standards in the art bible and checked in context. |
+| An espionage game in real cities of the twentieth century | A present-day open-world city game in one fictional American city | The project lead's direction of 2026-11-14 |
+| No vehicle traffic simulation | Traffic is a core system, stage 3 | Driving and a living street are pillars |
+| Avoid procedural city generation | Generated buildings and dressing on a hand-designed street plan, with hand-built landmarks | The failure case was generating the city itself with no game. Here one block is finished first, and the fun is found on four blocks before the city grows |
+| Low-poly toon style | Realistic assets with physically based materials | The project lead's direction. The report's warning stands as a risk: realism is held to measurable standards in the art bible and checked in context |
+| Tablets as an equal target | PC leads; tablets later, if at all | Raises the visual ceiling |
+| Third-party CC0 assets | Every asset made by us | The project's own rule (`CONTRIBUTING.md`) |
 
-## 13. Open questions for later passes
+## 14. Open questions
 
-- Names for the fictional services, handlers and car makes (a writing pass).
-- Recruitment design: the research did not cover it.
-- Whether the Compatibility renderer does occlusion culling; Mobile renderer speed on the tablets.
-- Font licence texts, before any font is used. Fonts are the only third-party files accepted; every other asset is made by the project's contributors.
-- A proper trademark search for the name OpenSpygate (a quick web search found no game or mark with that name).
+| Question | Who decides |
+|---|---|
+| The premise and story | Project lead |
+| The content rating | Project lead |
+| Godot or Unreal, settled by the side-by-side comparison | Project lead |
+| The city's name ("Calder" is a working title) | Project lead, from a proposal |
+| The order of districts after downtown | Project lead, from the production plan |
+| Session size and internet play | Stage 5 |
+| A trademark search for the name OpenSpygate (a quick web search found no game or mark with that name) | Project manager |

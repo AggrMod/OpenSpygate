@@ -1,48 +1,47 @@
 # OpenSpygate: Production Plan
 
-Version 0.1, 2026-11-14. Companion to `GDD.md`.
+Version 0.2, 2026-11-14. Companion to `GDD.md`. Replaces version 0.1, which planned a Cold War game starting in Berlin; that plan is in the git history.
 
 ## How this is run
 
 - **Stages with gates.** A stage ends when its gate is passed, not on a date. Quality decides.
-- **Pipelines before content.** Buildings, streets, props, people and vehicles come from generators, so each new district and city reuses the machinery.
-- **No placeholder art.** The first playable build already uses real, if few, assets.
-- **Everything tested.** Each system has a self-playing test that writes pictures and result files. Rules run on the host and are tested without graphics. Multiplayer tests run a host and several clients on this PC with simulated lag and packet loss.
-- **Review gates.** Every asset gets a turntable picture and an in-game street-level picture, checked next to its neighbours before it goes in. The project lead approves the look at the marked gates.
-- **Our own assets.** Every asset is made by the project's contributors and released under permissive licences. No downloaded asset packs. Fonts are the one exception and are logged in `assets/LICENSES.csv`.
+- **One finished piece at a time.** The city grows outward from one block. Each piece is finished to the standard before the next is started. Where nothing is built, there is void.
+- **Pipelines before volume.** Buildings, streets, props and vehicles come from scripts and generators, so each new block and district reuses the machinery. Stage 6 turns them into tools that grow the city.
+- **No placeholder art.** Every build uses real, if few, assets.
+- **Everything tested.** Each system has a self-playing test that writes `result.json` and pictures. Rules that run on the host are tested without graphics. Multiplayer tests run a host and several clients on one PC with simulated lag and packet loss.
+- **Review gates.** Every asset gets a turntable picture and an in-game street-level picture, by day and by night, checked next to its neighbours before it goes in. The project lead approves the look and judges the fun at the marked gates.
+- **Our own assets.** Every asset is made by the project's contributors and released under permissive licences. No downloaded asset packs. Fonts under the Open Font License are the one exception and are logged in `assets/LICENSES.csv`.
 - **Open contribution.** Work is split into small tasks with written standards and automatic checks, so many people can build in parallel. See `TASKS.md` and `CONTRIBUTING.md`.
 
 ## Stages
 
 | # | Stage | What gets built | Gate |
 |---|---|---|---|
-| 0 | Pre-production | Research (done), design document (done), this plan (done), art bible, technical design | The project lead has read the design and agrees with the direction |
-| 1 | Foundations | Godot project, git with automatic checks on every pull request, host-decides networking skeleton with lag simulator, test harness, quality tiers, benchmark scene | Two clients and a host stay in agreement at 150 ms lag and 5% loss; benchmark numbers recorded on the PC and a tablet |
-| 2 | The Door | An empty black void, one door at the highest realistic detail we can reach (wood grain, worn brass, light under the gap), the voice, and walking up to it and through. Sets the detail standard, the material and lighting setup, and the asset checks | **The project lead approves the door.** If not, it is reworked until it is right |
-| 3 | Through the door: find the fun | The first Berlin street corner built outward from behind the door, to the door's standard: 2 buildings, about 10 props, 1 car, 1 person, wet cobbles, night lighting. On it: player movement and camera, a crowd, suspicion meters, 3 covers and the spaces they fit, the six alert tiers, shaking pursuit, one photograph/bug action, the debrief log | A 10-minute operation on one block is fun to replay, by the project lead's judgment, and holds frame rate on the reference PC |
-| 4 | Character pipeline | Scripted modular people on one skeleton, period wardrobe, faces, animation library, crowd levels of detail | 40+ distinct pedestrians pass the review gate; the first is approved by the project lead before the rest are made |
-| 5 | City pipeline | Facade kit (50 to 70 pieces), building generator, road-map-driven streets, navigation, minimap, rule-based street dressing, chunk streaming | A generated block is indistinguishable in quality from the first corner |
-| 6 | Berlin, district 1 | The checkpoint district, about 600 m square: 120 to 250 buildings, 3 landmarks, 4 to 6 interiors, day and night | Walk the whole district at 60 fps on the PC and 30 on a tablet with no visible repetition problems |
-| 7 | Tradecraft and missions | Dead drops, signal sites, brush passes, detection routes, sources, exfiltration, the bridge swap; mission scripting; the first chain of 6 to 8 operations | The chain is playable start to finish solo |
-| 8 | Co-op | 2 to 4 players in free roam and operations, late join, saved drops and marks | A full operation completed by a PC and two tablets together |
-| 9 | Vehicles and traffic | Car generator (8 to 10 period types), arcade handling, lane traffic, trams, chases, vehicle tailing | A car chase across the district works in multiplayer without visible disagreement between devices |
-| 10 | Sound, voice, interface | Adaptive music, ambience, footsteps, voiced briefings, dossier menus, map, gadget wheel, credits and licences screen | Full pass with no missing sounds or unfinished screens |
-| 11 | Berlin complete | Districts 2 to 5, the wiretap-tunnel and sector-crossing operations, hidden-agent rounds, two-service free roam | Berlin is a finished game on its own |
-| 12 | World 2 onward | Lisbon, then Moscow, Istanbul, Vienna, Havana. Each needs a new facade kit, landmarks, palette, wardrobe, ambience, music and missions; about 60% of everything else is reused | Per world, the same gates as stages 6, 7 and 11 |
+| 0 | Direction | The direction written down: design document, this plan, the task list, `AGENTS.md`. Done by the rewrite of 2026-11-14, apart from the open decisions (premise, content rating, engine, the city's name) | Done. The open decisions are tracked in `GDD.md`, section 14, and do not hold up stage 1 |
+| 1 | The first block | One downtown block you can walk and drive round, by day and night, with sound, at final quality: street, kerbs, pavements, signals, street furniture, buildings from the generator, the saloon car, a time-of-day sky and street lighting, engine, tyre, wind and city sound. Plus the foundations it needs: automatic checks on every pull request, a frame-rate and memory benchmark on the block | **The project lead approves the look on the PC.** If not, it is reworked until it is right. Holds 60 fps on the reference PC *(start)* |
+| 2 | The person | A third-person character of our own on one shared skeleton, with walking, running and turning animation, and getting in and out of cars properly (door opens, the character sits, the door closes) | The character walks the block and gets in and out of the car without visible popping or sliding, checked in self-playing test pictures and by the project lead |
+| 3 | The living street | Traffic on lanes that obeys the signals and gives way, pedestrians on the pavements who cross at signals, parked cars | A 10-minute self-playing run on the block with no collisions between traffic, no pedestrian walking through a car or wall, and frame rate held on the reference PC |
+| 4 | Find the fun | Four blocks, and a small set of things to do on them. What those things are is found here, by building and playing | **The project lead judges whether it is fun.** If not, the set changes until it is |
+| 5 | Multiplayer foundation | Host-decides networking skeleton, a lag and packet-loss simulator, a multi-client test harness, friends in one city | A host and two clients stay in agreement at 150 ms lag and 5% loss, on foot and driving, in a self-playing network test |
+| 6 | The district pipeline | Tools that grow the city block by block: the street plan as data, the building generator driven by it, rule-based street dressing, chunk streaming, navigation and traffic lanes from the same data | A generated block is indistinguishable in quality from the hand-finished first block, and a new block can be added from data alone |
+| Later | The city | More districts (the bluffs, riverfront and port, rail yards and industry, midtown, suburbs, the flood plain), more vehicles, interiors, the story once the premise is decided | Each district passes the same gates as stages 1 and 6 |
+
+Numbers marked *(start)* are starting values, measured and corrected when the stage runs.
 
 ## Biggest risks
 
 | Risk | What guards against it |
 |---|---|
-| The look disappoints | Stage 2 gate (the door) before any volume of art is made |
-| Realistic detail is too heavy for the hardware | Measured on the door and the first corner; levels of detail and texture tiers on every asset; budgets enforced automatically |
-| Realistic assets vary in quality between contributors | Measurable standards in the art bible (dimensions, texel density, material ranges), source files required, in-context review |
-| The core isn't fun | Stage 3 gate before the city is built |
-| Tablet speed | Benchmark in stage 1; quality tiers; budgets enforced by an automatic fly-through test |
+| The look disappoints | Stage 1 gate: one block at final quality, approved by the project lead, before any volume of city is made |
+| Realistic detail is too heavy for the hardware | Measured on the first block; levels of detail and texture tiers on every asset; budgets enforced by the benchmark |
+| Realistic assets vary in quality between contributors | Measurable standards in the art bible, sources and scripts required, in-context review by day and night |
+| Generated buildings and streets look repetitive | Hand-designed street plan, hand-built landmarks, per-district building mix, review of whole blocks, not single buildings |
+| The game isn't fun | Stage 4 gate before the city is grown |
+| The engine question stays open too long | Settled by a side-by-side comparison of the same assets; assets kept engine-neutral where cheap |
 | Netcode instability | Only your own movement is predicted; everything else is confirmed by the host; lag simulator in every multiplayer test |
-| A generated city feels repetitive | Hand-designed street plan, landmarks, per-district building mix, hand-placed story spots |
 | Scope drift | A stage's gate must pass before the next stage starts |
+| Something real or copied slips in | Review step 2 (origin) in `AGENTS.md`; every name checked against real brands and places |
 
 ## What happens next
 
-Stage 0 finishes with two short documents: the art bible (real-world scale, material and texture standards, lighting setup, the specification for the door) and the technical design (network messages, entity model, chunk format, test harness). Then stage 1 starts.
+Stage 1 is open. Its first pass was merged on 2026-11-15: a 2 x 2 block street grid with a time-of-day sky, a procedural building generator, a reworked car body, and engine, tyre and wind sound. It is not at the gate yet. The follow-ups and the rest of the stage 1 tasks are in `TASKS.md`.

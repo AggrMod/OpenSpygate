@@ -44,7 +44,7 @@ Every commit must carry a sign-off line (`git commit -s`). By signing off you st
 
 - The automatic checks run first. Fix those before asking for review.
 - A maintainer for that area (code, art, audio, missions) checks the contribution against the written standard. Reviews are about the standard, not personal taste; if a standard is missing or wrong, propose a change to the standard.
-- Two decisions belong to the project lead: the overall look, and whether the core game is fun. Both are settled early, in stages 2 and 3, so later work has a fixed target.
+- Two decisions belong to the project lead: the overall look, and whether the core game is fun. The look is settled at the stage 1 gate and the fun at stage 4, so later work has a fixed target.
 
 ## Maintainers
 

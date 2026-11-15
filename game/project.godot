@@ -4,8 +4,8 @@ config_version=5
 [application]
 
 config/name="OpenSpygate"
-config/description="Open Spygate International: an open-source, open-world espionage game."
-run/main_scene="res://worlds/void/void.tscn"
+config/description="OpenSpygate: an open-source, open-world city game."
+run/main_scene="res://worlds/city/city.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 
 [autoload]

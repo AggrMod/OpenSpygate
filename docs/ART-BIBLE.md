@@ -1,8 +1,10 @@
 # Art Bible
 
+> **Direction change, 2026-11-14.** OpenSpygate is now a modern-day, open-world city game set in a fictional present-day American river-port city (`docs/GDD.md`). For this document that means: the standards (scale, geometry, budgets, materials, texel density, files, review) stand unchanged; statements that tied assets to Berlin and to 1961 have been replaced with "true to how such places are really built" and a stated real reference; the numbers are now calibrated on the first downtown block (stage 1). The door specification in section 11 is kept as it is: the door was designed from Berlin flat doors of about 1900 and stays as the opening of the game. Vehicles, street furniture and characters are present-day.
+
 Version 0.1, 2026-11-14. The measurable standard every visual asset is reviewed against. A reviewer should be able to pass or fail an asset from this document alone.
 
-The numbers here are starting values. They are calibrated on the door (stage 2) and the first street corner (stage 3), measured on the reference PC (GTX 1660 SUPER, 1080p). When a number changes, it changes here first.
+The numbers here are starting values. They were first set on the door and are calibrated on the first downtown block (stage 1), measured on the reference PC (GTX 1660 SUPER, 1080p). When a number changes, it changes here first.
 
 ## 1. The look in one paragraph
 
@@ -18,7 +20,7 @@ Realistic, solid and specific. Things have the right size, the right weight and 
 | Dimensions | Real-world, within 2% of a documented reference. State the reference in the pull request |
 | Applied transforms | Scale 1, rotation 0 on export |
 
-Reference sizes: adult 1.75 m; eye level 1.6 m; door leaf about 0.9 by 2.1 m; stair riser 0.17 m; kerb 0.12 to 0.15 m; Berlin tenement storey 3.2 to 3.8 m; traffic lane 3 m.
+Reference sizes: adult 1.75 m; eye level 1.6 m; door leaf about 0.9 by 2.1 m; stair riser 0.17 m; kerb 0.12 to 0.15 m; traffic lane 3 m. For anything else (storey heights, lane widths, signal heights), state the real reference you measured from.
 
 ## 3. Geometry
 
@@ -32,10 +34,10 @@ Reference sizes: adult 1.75 m; eye level 1.6 m; door leaf about 0.9 by 2.1 m; st
 
 | Class | Example | Budget |
 |---|---|---|
-| Hero piece | The door, a landmark detail, a key gadget | up to 80,000 |
-| Small prop | Telephone, lamp, bottle | up to 5,000 |
-| Medium prop | Bench, phone booth, kiosk | up to 15,000 |
-| Large prop | Tram shelter, market stall | up to 30,000 |
+| Hero piece | The door, a landmark detail | up to 80,000 |
+| Small prop | Parking meter, lamp, bottle | up to 5,000 |
+| Medium prop | Bench, newspaper box, fire hydrant | up to 15,000 |
+| Large prop | Bus shelter, signal pole with its arms | up to 30,000 |
 | Vehicle | Exterior up to 60,000; interior up to 30,000 |
 | Character | Body, head and one outfit | up to 50,000 |
 | Facade piece | One window bay, one shopfront | up to 8,000 |
@@ -88,35 +90,35 @@ Author at the highest tier. The engine produces the lower ones on import.
 
 - Wear follows use: edges, handles, kick height, where water runs, where sun reaches.
 - No uniform noise or "dirt everywhere". If you cannot say why a mark is there, remove it.
-- Period-correct materials for the world and year. For Berlin 1961-63: oil paint, enamel signs, brass, cast iron, bakelite, sandstone, render, cobbles.
+- Materials true to the place and the present day: asphalt, concrete, brick, painted steel, glass, aluminium, plastics. Say what real reference a material is matched to.
 
-## 5. Period, originality and names
+## 5. Reference, originality and names
 
-- Every asset fits its world's year. Give your reference in the pull request (see the reference packs in `docs/reference/`).
+- Every asset is true to how such things are really built today. Give your reference in the pull request. Reference is studied for dimensions and construction, never traced or copied.
 - No real brands, logos, maker's marks or product names. Invent them, or leave plates blank.
 - No real people's names on signs, plates or documents.
-- Text on assets is in the world's language and period lettering, and says something ordinary.
+- Text on assets is in American English, in lettering of our own or Godot's built-in font or an Open Font License font, and says something ordinary.
 - Built entirely from your own work. Materials and textures are authored (procedural or painted), not downloaded scans. See `CONTRIBUTING.md`.
 
 ## 6. Characters
 
 - Realistic proportions, about 7.5 heads tall. One shared skeleton, defined in the technical design.
 - Faces: believable structure, slightly simplified skin and features. No attempt at photographic likeness, and never a real person.
-- Clothing is separate skinned pieces with real fabric behaviour in the material: wool is rough and matte, leather has worn highlights.
+- Clothing is present-day, in separate skinned pieces with real fabric behaviour in the material: denim and wool are rough and matte, leather has worn highlights.
 - Hair is modelled shapes or cards, whichever holds up at 1 m on the reference PC.
 
 ## 7. Files and names
 
 ```
 assets/<world>/<class>/<name>/
-  source/     the .blend file (Blender 4.2 LTS) or the script that makes it
+  source/     the script that makes it, and the .blend file (Blender 4.2 LTS) it produces
   export/     <name>.glb  (glTF 2.0 binary)
   textures/   <name>_<part>_basecolor.png, _normal.png, _orm.png, _emission.png
   review/     the pictures listed in section 8
 ```
 
-- Lowercase, underscores, no spaces: `berlin_prop_phone_booth_a`.
-- `<world>` is a city name or `shared`. `<class>` is `hero`, `prop`, `vehicle`, `character`, `facade`, `interior`, `ground`.
+- Lowercase, underscores, no spaces: `shared_prop_bus_shelter_a`.
+- `<world>` is a world name or `shared`. `<class>` is `hero`, `prop`, `vehicle`, `character`, `facade`, `interior`, `ground`.
 - Object names inside the file match the file name, with `_LOD0`, `-col` and part names added.
 
 ## 8. What a contribution must include
@@ -132,20 +134,20 @@ assets/<world>/<class>/<name>/
 
 ## 9. How it is reviewed
 
-Automatic checks (built in stage 2) measure: dimensions against the declared reference, transforms, triangle counts, LOD and collision presence, texel density, texture sizes, base-colour and metallic ranges, naming and folder layout.
+Automatic checks (to be built; see `docs/TASKS.md`) measure: dimensions against the declared reference, transforms, triangle counts, LOD and collision presence, texel density, texture sizes, base-colour and metallic ranges, naming and folder layout.
 
-A person or agent then checks what cannot be measured: does it read as the real thing at arm's length, does the wear make sense, does it sit with its neighbours, is it of its year. Review follows `AGENTS.md`, section 7.
+A person or agent then checks what cannot be measured: does it read as the real thing at arm's length, does the wear make sense, does it sit with its neighbours, by day and by night. Review follows `AGENTS.md`, section 7.
 
 ## 10. Lighting
 
 - Light is physically motivated: every light has a source you could point to.
-- One sun or moon, practical lamps, light from windows and doorways. Fog and a colour grade per city.
+- One sun or moon, practical lamps (street lights, signals, shop signs, headlights), light from windows and doorways. A sky and colour grade that follow the time of day.
 - Night scenes are lit by their practicals. Black is allowed to be black.
 - Reflections matter for wet streets and polished metal; assets are checked under them.
 
 ## 11. Specification: the door
 
-The first asset, and the standard for all others. Stage 2.
+The first asset, and the standard for all others. Built before stage 1 and in the game now; it cannot be opened yet.
 
 **What it is:** the entrance door of a Berlin tenement flat, built around 1900, as it looks in 1961. It stands alone in an empty black void, closed, with light coming from behind it.
 

@@ -524,6 +524,7 @@ if CLAY:
         cam.location = loc; cam.data.lens = lens
         cam.rotation_euler = (Vector(target) - Vector(loc)).to_track_quat('-Z', 'Y').to_euler()
         sc.render.resolution_x, sc.render.resolution_y = res
+        sc.render.use_stamp_filename = False      # keep the machine's file path out of the picture's metadata
         sc.render.filepath = os.path.join(ASSET, "review", name + ".png")
         bpy.ops.render.render(write_still=True)
         print("SHOT", name)

@@ -1,8 +1,10 @@
 # Technical Design
 
+> **Direction change, 2026-11-14.** OpenSpygate is now a modern-day, open-world city game (`docs/GDD.md`). For this document that means: the ground rules, code style, testing, saving and quality tiers stand. The espionage systems (suspicion, alert tiers, cover burn, tradecraft, missions) are gone from the layout; the planned systems are traffic, pedestrians, police response and the economy. Networking (section 4) is the design for stage 5, not for stage 1. The engine stays Godot 4.7 while the Unreal question is open (`docs/GDD.md`, section 6.1). The layout in section 2 is the target; what exists today is `autoload/`, `actors/player/`, `actors/vehicle/`, `audio/vehicle/`, `worlds/void/`, `worlds/city/` and `tests/auto/`.
+
 Version 0.1, 2026-11-14. The standard all code is reviewed against. It is built from `docs/research/03-tech-and-netcode.md`; where they differ, this document wins.
 
-Numbers marked *(start)* are starting values, to be measured and corrected in stages 1 to 3.
+Numbers marked *(start)* are starting values, to be measured and corrected as the stages run.
 
 ## 1. Ground rules
 
@@ -24,11 +26,10 @@ autoload/
   net.gd           transport, discovery, protocol gate, clock
   replication.gd   entity registry, spawn and despawn, snapshots
 sim/               rules with no scene tree: testable without graphics
-  exposure/        suspicion, alert tiers, cover burn
   crowd/           pedestrians from seed and time
   traffic/         lanes and vehicles from seed and time
-  tradecraft/      drops, signals, sources
-  missions/        data-driven objectives
+  police/          police response
+  economy/         money, prices, shops
 actors/
   player/  npc/  vehicle/
 worlds/<world>/    world.tres, chunks/, roads.tres, nav/
@@ -102,7 +103,7 @@ Both are the same code path: the host is whoever `multiplayer.is_server()` is tr
 | `spawn` / `despawn` | host to client | reliable | see 4.4 |
 | `action_request` | client to host | reliable | "I want to do X to entity Y" |
 | `action_result` | host to client | reliable | what happened |
-| `event` | host to client | reliable | alert tier changes, cover burned, mission state |
+| `event` | host to client | reliable | changes every player must see at once: time of day, police response, world state |
 
 - Snapshots are one packed byte array per client per send: positions as 16-bit integers relative to the cell, angles as one byte.
 - A client is added to the snapshot stream only after its `ready`.
@@ -111,8 +112,8 @@ Both are the same code path: the host is whoever `multiplayer.is_server()` is tr
 
 - **Your own player:** predicted on your device, corrected by the host. The client keeps its unacknowledged inputs and replays them when a correction arrives.
 - **Everyone and everything else:** shown about 100 ms in the past, interpolated between two snapshots.
-- **Actions** (take a photograph, plant a bug, open a door, pick a lock) are never predicted. The client plays a short wind-up while it waits for `action_result`.
-- **Looking back in time:** the host keeps one second of position history, so a sight check or a photograph is judged from what that client was actually seeing.
+- **Actions** (open a door, get into a car, buy something) are never predicted. The client plays a short wind-up while it waits for `action_result`.
+- **Looking back in time:** the host keeps one second of position history, so a collision or a sight check is judged from what that client was actually seeing.
 
 ### 4.7 Interest
 
@@ -123,7 +124,7 @@ Each world is a grid of 96 m cells *(start)*. A client receives entities in the 
 - Ambient pedestrians and vehicles are a pure function of `(world seed, agent id, server_tick)`: which path they are on and how far along. Every device computes them; nothing is sent.
 - The function uses integer steps and path parameters, never physics, so PCs and tablets agree.
 - An agent that a player disturbs (bumped, alerted, followed, spoken to) is **promoted**: the host takes it over as a normal entity until it calms down and rejoins its schedule.
-- Guards, targets, sources and witnesses are always host entities.
+- Police, and anyone a player is dealing with directly, are always host entities.
 - The host sends a checksum of the ambient state every few seconds; a client that disagrees resynchronises.
 
 ### 4.9 Vehicles
@@ -135,7 +136,7 @@ Our own arcade car (ray casts for suspension, no engine vehicle body). The drive
 - Each world lives in `worlds/<world>/` with a `world.tres`: seed, grid, chunk list, road graph, spawn points, travel points.
 - A chunk is a `.tscn` covering a 96 m square *(start)*: static meshes, collision, a navigation piece, markers. Chunks never reference each other.
 - Clients load the chunks around their player with threaded loading and add a limited number of nodes per frame. The host loads collision and navigation for the chunks around every player.
-- **The void rule:** where no chunk exists, nothing is drawn and nothing is loaded. The world's edge is void, not a wall. The first world file is the void with the door.
+- **The void rule:** where no chunk exists, nothing is drawn and nothing is loaded. The world's edge is void, not a wall. The void with the door is its own world; the city is the world the game starts in.
 - Navigation is baked per chunk with a shared border so neighbours join. A test paths across every chunk border.
 - One world is loaded at a time on a client. Travel between worlds: request, host checks, unload, load, `ready`, snapshot.
 
@@ -143,7 +144,7 @@ Our own arcade car (ray casts for suspension, no engine vehicle body). The drive
 
 - The host writes the save. Clients keep only their own settings.
 - Versioned JSON, one file per profile, plus one per world for its persistent state.
-- World state is stored as **edits on top of the seed** (a safe opened, a mark left, a cover burned), never as a copy of the world.
+- World state is stored as **edits on top of the seed** (a car parked, a door opened), never as a copy of the world.
 - Every save has a `version` field and a migration function per version.
 
 ## 7. Quality tiers
@@ -155,7 +156,7 @@ Our own arcade car (ray casts for suspension, no engine vehicle body). The drive
 | Low | Mobile, or Compatibility where needed | Tablets and phones, 30 frames per second |
 
 - Tiers change texture size, level-of-detail distance, shadow and reflection quality, crowd density and draw distance. They never change game rules or what the host decides.
-- Which renderer the Low tier uses is decided by the stage 1 benchmark on real tablets.
+- Which renderer the Low tier uses is decided by a benchmark on real tablets, if and when tablets become a target.
 
 ### Budgets *(start)*
 
@@ -198,6 +199,7 @@ Rules for tests:
 
 ## 11. Open questions
 
-- Whether the Compatibility renderer honours occlusion culling, and Mobile renderer speed on tablets (stage 1 benchmark).
-- Whether to adopt an existing prediction library or keep our own small one (decide after the stage 1 movement task).
-- The character skeleton and animation set (decided with the character pipeline, stage 4; the door and first corner need only a walking player).
+- Whether the Compatibility renderer honours occlusion culling, and Mobile renderer speed on tablets (a tablet benchmark, when tablets become a target).
+- Whether to adopt an existing prediction library or keep our own small one (decide in stage 5, the multiplayer foundation).
+- The character skeleton and animation set (decided in stage 2, the person; the first block needs only the first-person player).
+- Godot or Unreal: open, settled by the side-by-side comparison (`docs/GDD.md`, section 6.1).

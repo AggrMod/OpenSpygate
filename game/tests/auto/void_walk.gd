@@ -2,6 +2,7 @@ extends Node
 ## Self-playing test: start in the void, walk toward the door, take pictures on the way.
 ## Passes by writing result.json. The process exit code is not trusted.
 
+const WORLD: String = "void"        # read by Game: this test runs in the void (see autoload/game.gd)
 const WALK_SECONDS: float = 4.0
 
 var _result: Dictionary = {"test": "void_walk", "pass": false, "notes": []}
